@@ -27,7 +27,6 @@ class KepixelTracker {
    * @param {boolean} [options.log=false] - Indicates if logging is enabled.
    */
   initialize({ appId, userId, disabled = false, log = false }) {
-    console.log("userId",userId);
     this.disabled = disabled;
     this.log = log;
 
@@ -50,6 +49,10 @@ class KepixelTracker {
         appId: this.appId,
         userId: this.userId
       });
+  }
+
+  setUserId(userId) {
+    this.userId = userId;
   }
 
   /**
