@@ -15,6 +15,7 @@ const useKepixel = () => {
             trackLink: (params) => instance.trackLink && instance.trackLink(params),
             trackDownload: (params) => instance.trackDownload && instance.trackDownload(params),
             setUserId: (userId) => instance.setUserId && instance.setUserId(userId),
+            setAppId: (appId) => instance.setAppId && instance.setAppId(appId),
         }),
         [instance]
     );

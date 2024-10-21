@@ -55,6 +55,10 @@ class KepixelTracker {
     this.userId = userId;
   }
 
+  setAppId(appId) {
+    this.appId = appId;
+  }
+
   /**
    * Tracks app start as an action with a prefixed 'App' category.
    *
@@ -309,62 +313,6 @@ class KepixelTracker {
 
         return error;
       });
-
-      //NEW
-    //   const fetchObj = {
-    //     method: 'POST',
-    //     headers: {
-    //       Accept: 'application/json',
-    //       'Accept-Language': "en",
-    //       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    //     },
-    //     // body: new URLSearchParams({
-    //     //   appid:this.appId,
-    //     //   rec: 1,
-    //     //   apiv: 1,
-    //     //   ...(this.userId ? { uid: this.userId }: {}),
-    //     //   send_image: 0,
-    //     //   ...data
-    //     // }).toString()
-    //   };
-    //   let bodyData= {
-    //     appid:this.appId,
-    //     rec: 1,
-    //     apiv: 1,
-    //     ...(this.userId ? { uid: this.userId }: {}),
-    //     send_image: 0,
-    //     ...data
-    //   }
-    //  let bodyStr =  Object.keys(bodyData).map(function(key) {
-    //     return key + '=' + bodyData[key];
-    //   }).join('&');
-  
-    //   console.log("bodyStr",bodyStr);
-    //   return fetch(this.trackerUrl+"?"+bodyStr, fetchObj)
-    //     .then((response) => {
-    //       console.log("RESPONSE TRACK",response);
-    //       if (!response.ok) {
-    //         throw Error(response.statusText);
-    //       }
-  
-    //       this.log && console.log('Kepixel tracking is sent:', this.trackerUrl, fetchObj);
-  
-    //       return response;
-    //     })
-    //     .catch((error) => {
-    //       console.log("ERROR TRACK",error);
-    //       if(error?.response){
-    //         console.log("ERROR TRACK res",error?.response);
-    //       }
-    //       console.log(" this.trackerUrl TRACK", this.trackerUrl);
-    //       console.log(" fetchObj TRACK", fetchObj);
-  
-    //       this.log && console.log('Kepixel tracking is not sent:', this.trackerUrl, fetchObj);
-  
-    //       console.warn('Kepixel tracking error:', error);
-  
-    //       return error;
-    //     });
   }
 }
 
