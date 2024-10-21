@@ -1,0 +1,16 @@
+{
+  "name": "kepixel-jstracker-react-native",
+  "version": "0.0.1",
+  "description": "Stand alone library for using Kepixel tracking in React Native and Expo projects.",
+  "license": "MIT",
+  "repository": "kepixel/react-native-js",
+  "main": "index.js",
+  "keywords": [
+    "Kepixel",
+    "react native",
+    "expo"
+  ],
+  "author": "Osama <osama@kepixel.com>",
+  "bugs": {
+  }
+}
