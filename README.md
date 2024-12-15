@@ -1,4 +1,4 @@
-### Enhanced Documentation for Using Kepixel React-Native-JS
+### Documentation for Using Kepixel React-Native-JS
 
 #### 1. **Installation**
 Install the Kepixel React Native JS library by running:
