@@ -8,16 +8,13 @@ npm install https://github.com/Kepixel/react-native-js
 
 #### 2. **Setup in `App.js`**
 
-##### Import Required Modules:
+##### Import Required Modules and Create an Instance:
 ```javascript
 import KepixelTracker, {
   KepixelProvider,
   useKepixel,
 } from 'kepixel-jstracker-react-native';
-```
 
-##### Create an Instance:
-```javascript
 let instance = null;
 const { trackAppStart } = useKepixel();
 
@@ -110,6 +107,8 @@ trackEvent({
   name: 'content_view',
 });
 ```
+
+**Note:** You can send custom data in the `action` key to include additional details about the event.
 
 ---
 
