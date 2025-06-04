@@ -5,7 +5,6 @@
  * @param {Object} userOptions - User configuration options for Kepixel tracking.
  * @param {string} userOptions.appId - The Kepixel app ID.
  * @param {string} [userOptions.userId] - The user ID for tracking.
- * @param {boolean} [userOptions.disabled=false] - Indicates if Kepixel tracking is disabled.
  * @param {boolean} [userOptions.log=false] - Indicates if logging is enabled.
  */
 class KepixelTracker {
@@ -23,18 +22,10 @@ class KepixelTracker {
    * @param {Object} options - Initialization options.
    * @param {string} options.appId - The Kepixel app ID.
    * @param {string} [options.userId] - The user ID for tracking.
-   * @param {boolean} [options.disabled=false] - Indicates if Kepixel tracking is disabled.
    * @param {boolean} [options.log=false] - Indicates if logging is enabled.
    */
-  initialize({ appId, userId, disabled = false, log = false }) {
-    this.disabled = disabled;
+  initialize({ appId, userId, log = false }) {
     this.log = log;
-
-    if (disabled) {
-      log && console.log('Kepixel tracking is disabled.');
-
-      return;
-    }
 
     this.trackerUrl = "https://edge.kepixel.com";
     this.appId = appId;
@@ -264,7 +255,6 @@ class KepixelTracker {
    * @returns {Promise} A Promise that resolves when the tracking data is sent.
    */
   track(data) {
-    if (this.disabled) return;
     if (!data) return;
 
     // take a possibly given language and delete it from the data object, as we need to pass it in
