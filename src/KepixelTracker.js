@@ -12,7 +12,7 @@ class KepixelTracker {
     if (!userOptions.appId) {
       throw new Error('appId is required for Kepixel tracking.');
     }
-    
+
     this.initialize(userOptions);
   }
 
@@ -161,36 +161,6 @@ class KepixelTracker {
   }
 
   /**
-   * Tracks a site search.
-   *
-   * This method is used to record user searches on your site, providing valuable insights into user behavior.
-   *
-   * @param {Object} options - Options for tracking the site search.
-   * @param {string} options.keyword - The site search keyword. When specified, the request will not be tracked as a normal page view but will instead be tracked as a Site Search request.
-   * @param {string} [options.category] - Optional. When the 'keyword' parameter is specified, you can optionally specify a search category with this parameter.
-   * @param {number} [options.count] - Optional. When the 'keyword' parameter is specified, it is recommended to set 'search_count' to the number of search results displayed on the results page. When keywords are tracked with '&search_count=0', they will appear in the "No Result Search Keyword" report.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
-   * @throws {Error} Throws an error if the 'keyword' parameter is not provided.
-   * @returns {Promise} A Promise that resolves when the site search tracking is complete.
-   *
-   * @example
-   * // Tracking a site search without additional information
-   * trackSiteSearch({ keyword: 'product' });
-   *
-   * @example
-   * // Tracking a site search with a category, result count, and user information
-   * trackSiteSearch({ keyword: 'tutorial', category: 'Learning', count: 5, userInfo: { uid: '123456' } });
-   *
-   */
-  trackSiteSearch({ keyword, category, count, userInfo = {} }) {
-    if (!keyword) {
-      throw new Error('Error: The "keyword" parameter is required for tracking a site search.');
-    }
-
-    return this.track({ search: keyword, search_cat: category, search_count: count, ...userInfo });
-  }
-
-  /**
    * Tracks clicks on outgoing links.
    *
    * This method is used to record user interactions when clicking on external links, providing insights into user navigation patterns.
@@ -247,6 +217,536 @@ class KepixelTracker {
     return this.track({ download, url: download, ...userInfo });
   }
 
+  /**
+   * Tracks a purchase event.
+   *
+   * This method is used to record user purchase events in your application.
+   *
+   * @param {Object} [options={}] - Options for tracking the purchase.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the purchase tracking is complete.
+   *
+   * @example
+   * // Tracking a purchase
+   * trackPurchase({ userInfo: { value: 100, currency: 'USD', order_id: 'order123' } });
+   */
+  trackPurchase({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'purchase', ...userInfo });
+  }
+
+  /**
+   * Tracks an add to cart event.
+   *
+   * This method is used to record when users add items to their cart.
+   *
+   * @param {Object} [options={}] - Options for tracking the add to cart event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the add to cart tracking is complete.
+   *
+   * @example
+   * // Tracking an add to cart event
+   * trackAddToCart({ userInfo: { value: 50, currency: 'USD', content_ids: ['prod123'] } });
+   */
+  trackAddToCart({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'add_to_cart', ...userInfo });
+  }
+
+  /**
+   * Tracks a lead event.
+   *
+   * This method is used to record when users express interest in your product or service.
+   *
+   * @param {Object} [options={}] - Options for tracking the lead event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the lead tracking is complete.
+   *
+   * @example
+   * // Tracking a lead event
+   * trackLead({ userInfo: { value: 10, currency: 'USD', content_name: 'Product Inquiry' } });
+   */
+  trackLead({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'lead', ...userInfo });
+  }
+
+  /**
+   * Tracks a view content event.
+   *
+   * This method is used to record when users view specific content.
+   *
+   * @param {Object} [options={}] - Options for tracking the view content event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the view content tracking is complete.
+   *
+   * @example
+   * // Tracking a view content event
+   * trackViewContent({ userInfo: { content_ids: ['prod123'], content_type: 'product' } });
+   */
+  trackViewContent({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'view_content', ...userInfo });
+  }
+
+  /**
+   * Tracks a complete registration event.
+   *
+   * This method is used to record when users complete a registration process.
+   *
+   * @param {Object} [options={}] - Options for tracking the complete registration event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the complete registration tracking is complete.
+   *
+   * @example
+   * // Tracking a complete registration event
+   * trackCompleteRegistration({ userInfo: { content_name: 'Account Creation' } });
+   */
+  trackCompleteRegistration({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'complete_registration', ...userInfo });
+  }
+
+  /**
+   * Tracks a search event.
+   *
+   * This method is used to record when users perform a search.
+   *
+   * @param {Object} [options={}] - Options for tracking the search event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the search tracking is complete.
+   *
+   * @example
+   * // Tracking a search event
+   * trackSearch({ userInfo: { search_string: 'shoes' } });
+   */
+  trackSearch({ keyword, category, count, userInfo = {} }) {
+    if (!keyword) {
+      throw new Error('Error: The "keyword" parameter is required for tracking a site search.');
+    }
+
+    return this.track({ search: keyword, search_cat: category, search_count: count, ...userInfo });
+  }
+
+  /**
+   * Tracks an initiate checkout event.
+   *
+   * This method is used to record when users begin the checkout process.
+   *
+   * @param {Object} [options={}] - Options for tracking the initiate checkout event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the initiate checkout tracking is complete.
+   *
+   * @example
+   * // Tracking an initiate checkout event
+   * trackInitiateCheckout({ userInfo: { value: 100, currency: 'USD', content_ids: ['prod123'] } });
+   */
+  trackInitiateCheckout({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'initiate_checkout', ...userInfo });
+  }
+
+  /**
+   * Tracks an add payment info event.
+   *
+   * This method is used to record when users add payment information.
+   *
+   * @param {Object} [options={}] - Options for tracking the add payment info event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the add payment info tracking is complete.
+   *
+   * @example
+   * // Tracking an add payment info event
+   * trackAddPaymentInfo({ userInfo: { value: 100, currency: 'USD' } });
+   */
+  trackAddPaymentInfo({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'add_payment_info', ...userInfo });
+  }
+
+  /**
+   * Tracks a sign up event.
+   *
+   * This method is used to record when users sign up for a service.
+   *
+   * @param {Object} [options={}] - Options for tracking the sign up event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the sign up tracking is complete.
+   *
+   * @example
+   * // Tracking a sign up event
+   * trackSignUp({ userInfo: { content_name: 'Newsletter Signup' } });
+   */
+  trackSignUp({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'sign_up', ...userInfo });
+  }
+
+  /**
+   * Tracks a start checkout event.
+   *
+   * This method is used to record when users start the checkout process.
+   *
+   * @param {Object} [options={}] - Options for tracking the start checkout event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the start checkout tracking is complete.
+   *
+   * @example
+   * // Tracking a start checkout event
+   * trackStartCheckout({ userInfo: { value: 100, currency: 'USD' } });
+   */
+  trackStartCheckout({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'start_checkout', ...userInfo });
+  }
+
+  /**
+   * Tracks a page view event.
+   *
+   * This method is used to record when users view a page.
+   *
+   * @param {Object} [options={}] - Options for tracking the page view event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the page view tracking is complete.
+   *
+   * @example
+   * // Tracking a page view event
+   * trackPageView({ userInfo: { page_url: 'https://example.com/home' } });
+   */
+  trackPageView({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'page_view', ...userInfo });
+  }
+
+  /**
+   * Tracks a list view event.
+   *
+   * This method is used to record when users view a list of items.
+   *
+   * @param {Object} [options={}] - Options for tracking the list view event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the list view tracking is complete.
+   *
+   * @example
+   * // Tracking a list view event
+   * trackListView({ userInfo: { content_ids: ['prod123', 'prod456'] } });
+   */
+  trackListView({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'list_view', ...userInfo });
+  }
+
+  /**
+   * Tracks an add to wishlist event.
+   *
+   * This method is used to record when users add items to their wishlist.
+   *
+   * @param {Object} [options={}] - Options for tracking the add to wishlist event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the add to wishlist tracking is complete.
+   *
+   * @example
+   * // Tracking an add to wishlist event
+   * trackAddToWishlist({ userInfo: { content_ids: ['prod123'] } });
+   */
+  trackAddToWishlist({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'add_to_wishlist', ...userInfo });
+  }
+
+  /**
+   * Tracks an app open event.
+   *
+   * This method is used to record when users open the app.
+   *
+   * @param {Object} [options={}] - Options for tracking the app open event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the app open tracking is complete.
+   *
+   * @example
+   * // Tracking an app open event
+   * trackAppOpen({ userInfo: { app_version: '1.0.0' } });
+   */
+  trackAppOpen({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'app_open', ...userInfo });
+  }
+
+  /**
+   * Tracks an app install event.
+   *
+   * This method is used to record when users install the app.
+   *
+   * @param {Object} [options={}] - Options for tracking the app install event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the app install tracking is complete.
+   *
+   * @example
+   * // Tracking an app install event
+   * trackAppInstall({ userInfo: { device_model: 'iPhone 13' } });
+   */
+  trackAppInstall({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'app_install', ...userInfo });
+  }
+
+  /**
+   * Tracks a contact event.
+   *
+   * This method is used to record when users make contact.
+   *
+   * @param {Object} [options={}] - Options for tracking the contact event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the contact tracking is complete.
+   *
+   * @example
+   * // Tracking a contact event
+   * trackContact({ userInfo: { contact_method: 'email' } });
+   */
+  trackContact({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'contact', ...userInfo });
+  }
+
+  /**
+   * Tracks a customize product event.
+   *
+   * This method is used to record when users customize a product.
+   *
+   * @param {Object} [options={}] - Options for tracking the customize product event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the customize product tracking is complete.
+   *
+   * @example
+   * // Tracking a customize product event
+   * trackCustomizeProduct({ userInfo: { product_id: 'prod123', custom_options: 'color=red,size=large' } });
+   */
+  trackCustomizeProduct({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'customize_product', ...userInfo });
+  }
+
+  /**
+   * Tracks a donate event.
+   *
+   * This method is used to record when users make a donation.
+   *
+   * @param {Object} [options={}] - Options for tracking the donate event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the donate tracking is complete.
+   *
+   * @example
+   * // Tracking a donate event
+   * trackDonate({ userInfo: { donation_amount: 50.00, currency: 'USD' } });
+   */
+  trackDonate({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'donate', ...userInfo });
+  }
+
+  /**
+   * Tracks a find location event.
+   *
+   * This method is used to record when users search for a location.
+   *
+   * @param {Object} [options={}] - Options for tracking the find location event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the find location tracking is complete.
+   *
+   * @example
+   * // Tracking a find location event
+   * trackFindLocation({ userInfo: { location_query: 'New York' } });
+   */
+  trackFindLocation({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'find_location', ...userInfo });
+  }
+
+  /**
+   * Tracks a schedule event.
+   *
+   * This method is used to record when users schedule something.
+   *
+   * @param {Object} [options={}] - Options for tracking the schedule event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the schedule tracking is complete.
+   *
+   * @example
+   * // Tracking a schedule event
+   * trackSchedule({ userInfo: { appointment_type: 'Consultation' } });
+   */
+  trackSchedule({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'schedule', ...userInfo });
+  }
+
+  /**
+   * Tracks a start trial event.
+   *
+   * This method is used to record when users start a trial.
+   *
+   * @param {Object} [options={}] - Options for tracking the start trial event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the start trial tracking is complete.
+   *
+   * @example
+   * // Tracking a start trial event
+   * trackStartTrial({ userInfo: { trial_duration_days: 7 } });
+   */
+  trackStartTrial({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'start_trial', ...userInfo });
+  }
+
+  /**
+   * Tracks a submit application event.
+   *
+   * This method is used to record when users submit an application.
+   *
+   * @param {Object} [options={}] - Options for tracking the submit application event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the submit application tracking is complete.
+   *
+   * @example
+   * // Tracking a submit application event
+   * trackSubmitApplication({ userInfo: { application_type: 'Loan' } });
+   */
+  trackSubmitApplication({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'submit_application', ...userInfo });
+  }
+
+  /**
+   * Tracks a subscribe event.
+   *
+   * This method is used to record when users subscribe to a service.
+   *
+   * @param {Object} [options={}] - Options for tracking the subscribe event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the subscribe tracking is complete.
+   *
+   * @example
+   * // Tracking a subscribe event
+   * trackSubscribe({ userInfo: { subscription_type: 'Monthly', value: 9.99, currency: 'USD' } });
+   */
+  trackSubscribe({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'subscribe', ...userInfo });
+  }
+
+  /**
+   * Tracks an install event.
+   *
+   * This method is used to record when users install something.
+   *
+   * @param {Object} [options={}] - Options for tracking the install event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the install tracking is complete.
+   *
+   * @example
+   * // Tracking an install event
+   * trackInstall({ userInfo: { app_name: 'Example App' } });
+   */
+  trackInstall({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'install', ...userInfo });
+  }
+
+  /**
+   * Tracks a send conversion event.
+   *
+   * This method is used to record conversion events.
+   *
+   * @param {Object} [options={}] - Options for tracking the send conversion event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the send conversion tracking is complete.
+   *
+   * @example
+   * // Tracking a send conversion event
+   * trackSendConversion({ userInfo: { value: 100, currency: 'USD', order_id: 'order123' } });
+   */
+  trackSendConversion({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'send_conversion', ...userInfo });
+  }
+
+  /**
+   * Tracks a conversion adjustment event.
+   *
+   * This method is used to record conversion adjustment events.
+   *
+   * @param {Object} [options={}] - Options for tracking the conversion adjustment event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the conversion adjustment tracking is complete.
+   *
+   * @example
+   * // Tracking a conversion adjustment event
+   * trackConversionAdjustment({ userInfo: { value: 100, currency: 'USD', order_id: 'order123' } });
+   */
+  trackConversionAdjustment({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'conversion_adjustment', ...userInfo });
+  }
+
+  /**
+   * Tracks a login event.
+   *
+   * This method is used to record when users log in.
+   *
+   * @param {Object} [options={}] - Options for tracking the login event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the login tracking is complete.
+   *
+   * @example
+   * // Tracking a login event
+   * trackLogin({ userInfo: { method: 'email' } });
+   */
+  trackLogin({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'login', ...userInfo });
+  }
+
+  /**
+   * Tracks a tutorial begin event.
+   *
+   * This method is used to record when users begin a tutorial.
+   *
+   * @param {Object} [options={}] - Options for tracking the tutorial begin event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the tutorial begin tracking is complete.
+   *
+   * @example
+   * // Tracking a tutorial begin event
+   * trackTutorialBegin({ userInfo: { tutorial_name: 'Getting Started' } });
+   */
+  trackTutorialBegin({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'tutorial_begin', ...userInfo });
+  }
+
+  /**
+   * Tracks a join group event.
+   *
+   * This method is used to record when users join a group.
+   *
+   * @param {Object} [options={}] - Options for tracking the join group event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the join group tracking is complete.
+   *
+   * @example
+   * // Tracking a join group event
+   * trackJoinGroup({ userInfo: { group_id: 'group123' } });
+   */
+  trackJoinGroup({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'join_group', ...userInfo });
+  }
+
+  /**
+   * Tracks a qualified lead event.
+   *
+   * This method is used to record qualified lead events.
+   *
+   * @param {Object} [options={}] - Options for tracking the qualified lead event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the qualified lead tracking is complete.
+   *
+   * @example
+   * // Tracking a qualified lead event
+   * trackQualifiedLead({ userInfo: { lead_score: 90 } });
+   */
+  trackQualifiedLead({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'qualified_lead', ...userInfo });
+  }
+
+  /**
+   * Tracks a custom event.
+   *
+   * This method is used to record custom events.
+   *
+   * @param {Object} [options={}] - Options for tracking the custom event.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @returns {Promise} A Promise that resolves when the custom event tracking is complete.
+   *
+   * @example
+   * // Tracking a custom event
+   * trackCustomEvent({ userInfo: { custom_param: 'value' } });
+   */
+  trackCustomEvent({ userInfo = {} } = {}) {
+    return this.track({ event_name: 'custom_event', ...userInfo });
+  }
 
   /**
    * Sends the tracking data to Kepixel.
