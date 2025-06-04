@@ -20,8 +20,7 @@ const { trackAppStart } = useKepixel();
 
 instance = new KepixelTracker({
   appId: "your-app-id", // Required: Your app's unique ID
-  userId: "user-id",    // Optional: The user's ID
-  disabled: false,      // Optional: Enable/disable tracking
+  userId: "user-id"     // Optional: The user's ID
 });
 ```
 
@@ -114,7 +113,7 @@ trackEvent({
 
 ### Notes:
 1. **Required Parameters:** Always ensure the `appId` is provided during initialization.
-2. **Optional Parameters:** Use `userId` and `disabled` as needed to customize the tracking behavior.
+2. **Optional Parameters:** Use `userId` as needed to customize the tracking behavior.
 3. **Error Handling:** Add appropriate error handling where necessary to ensure smooth integration.
 
 By following this structure, you can effectively integrate and use the Kepixel React Native library in your project.
