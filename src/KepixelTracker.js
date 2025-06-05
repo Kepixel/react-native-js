@@ -7,6 +7,26 @@
  * @param {string} [userOptions.userId] - The user ID for tracking.
  * @param {boolean} [userOptions.log=false] - Indicates if logging is enabled.
  */
+import {
+  AddPaymentInfoEvent,
+  AddToCartEvent,
+  AddToWishlistEvent,
+  AppInstallEvent,
+  AppOpenEvent,
+  CompleteRegistrationEvent,
+  ContactEvent,
+  CustomEventEvent,
+  DownloadEvent,
+  InitiateCheckoutEvent,
+  ListViewEvent,
+  LoginEvent,
+  PageViewEvent,
+  PurchaseEvent,
+  SearchEvent,
+  SignUpEvent,
+  ViewContentEvent,
+} from '../DTO/index.js';
+
 class KepixelTracker {
   constructor(userOptions) {
     if (!userOptions.appId) {
@@ -209,12 +229,9 @@ class KepixelTracker {
    * trackDownload({ download: 'https://example.com/files/image.png', userInfo: { uid: '123456' } });
    *
    */
-  trackDownload({ download, userInfo = {} }) {
-    if (!download) {
-      throw new Error('Error: The "download" parameter is required for tracking a file download.');
-    }
-
-    return this.track({ download, url: download, ...userInfo });
+  trackDownload(params = {}) {
+    const event = new DownloadEvent(params);
+    return this.track(event);
   }
 
   /**
@@ -230,8 +247,9 @@ class KepixelTracker {
    * // Tracking a purchase
    * trackPurchase({ userInfo: { value: 100, currency: 'USD', order_id: 'order123' } });
    */
-  trackPurchase({ userInfo = {} } = {}) {
-    return this.track({ event_name: 'purchase', ...userInfo });
+  trackPurchase(params = {}) {
+    const event = new PurchaseEvent(params);
+    return this.track(event);
   }
 
   /**
@@ -247,8 +265,9 @@ class KepixelTracker {
    * // Tracking an add to cart event
    * trackAddToCart({ userInfo: { value: 50, currency: 'USD', content_ids: ['prod123'] } });
    */
-  trackAddToCart({ userInfo = {} } = {}) {
-    return this.track({ event_name: 'add_to_cart', ...userInfo });
+  trackAddToCart(params = {}) {
+    const event = new AddToCartEvent(params);
+    return this.track(event);
   }
 
   /**
@@ -277,8 +296,9 @@ class KepixelTracker {
    * // Tracking a view content event
    * trackViewContent({ userInfo: { content_ids: ['prod123'], content_type: 'product' } });
    */
-  trackViewContent({ userInfo = {} } = {}) {
-    return this.track({ event_name: 'view_content', ...userInfo });
+  trackViewContent(params = {}) {
+    const event = new ViewContentEvent(params);
+    return this.track(event);
   }
 
   /**
@@ -294,8 +314,9 @@ class KepixelTracker {
    * // Tracking a complete registration event
    * trackCompleteRegistration({ userInfo: { content_name: 'Account Creation' } });
    */
-  trackCompleteRegistration({ userInfo = {} } = {}) {
-    return this.track({ event_name: 'complete_registration', ...userInfo });
+  trackCompleteRegistration(params = {}) {
+    const event = new CompleteRegistrationEvent(params);
+    return this.track(event);
   }
 
   /**
@@ -311,12 +332,9 @@ class KepixelTracker {
    * // Tracking a search event
    * trackSearch({ userInfo: { search_string: 'shoes' } });
    */
-  trackSearch({ keyword, category, count, userInfo = {} }) {
-    if (!keyword) {
-      throw new Error('Error: The "keyword" parameter is required for tracking a site search.');
-    }
-
-    return this.track({ search: keyword, search_cat: category, search_count: count, ...userInfo });
+  trackSearch(params = {}) {
+    const event = new SearchEvent(params);
+    return this.track(event);
   }
 
   /**
@@ -332,8 +350,9 @@ class KepixelTracker {
    * // Tracking an initiate checkout event
    * trackInitiateCheckout({ userInfo: { value: 100, currency: 'USD', content_ids: ['prod123'] } });
    */
-  trackInitiateCheckout({ userInfo = {} } = {}) {
-    return this.track({ event_name: 'initiate_checkout', ...userInfo });
+  trackInitiateCheckout(params = {}) {
+    const event = new InitiateCheckoutEvent(params);
+    return this.track(event);
   }
 
   /**
@@ -349,8 +368,9 @@ class KepixelTracker {
    * // Tracking an add payment info event
    * trackAddPaymentInfo({ userInfo: { value: 100, currency: 'USD' } });
    */
-  trackAddPaymentInfo({ userInfo = {} } = {}) {
-    return this.track({ event_name: 'add_payment_info', ...userInfo });
+  trackAddPaymentInfo(params = {}) {
+    const event = new AddPaymentInfoEvent(params);
+    return this.track(event);
   }
 
   /**
@@ -366,8 +386,9 @@ class KepixelTracker {
    * // Tracking a sign up event
    * trackSignUp({ userInfo: { content_name: 'Newsletter Signup' } });
    */
-  trackSignUp({ userInfo = {} } = {}) {
-    return this.track({ event_name: 'sign_up', ...userInfo });
+  trackSignUp(params = {}) {
+    const event = new SignUpEvent(params);
+    return this.track(event);
   }
 
 
@@ -384,8 +405,9 @@ class KepixelTracker {
    * // Tracking a page view event
    * trackPageView({ userInfo: { page_url: 'https://example.com/home' } });
    */
-  trackPageView({ userInfo = {} } = {}) {
-    return this.track({ event_name: 'page_view', ...userInfo });
+  trackPageView(params = {}) {
+    const event = new PageViewEvent(params);
+    return this.track(event);
   }
 
   /**
@@ -401,8 +423,9 @@ class KepixelTracker {
    * // Tracking a list view event
    * trackListView({ userInfo: { content_ids: ['prod123', 'prod456'] } });
    */
-  trackListView({ userInfo = {} } = {}) {
-    return this.track({ event_name: 'list_view', ...userInfo });
+  trackListView(params = {}) {
+    const event = new ListViewEvent(params);
+    return this.track(event);
   }
 
   /**
@@ -418,8 +441,9 @@ class KepixelTracker {
    * // Tracking an add to wishlist event
    * trackAddToWishlist({ userInfo: { content_ids: ['prod123'] } });
    */
-  trackAddToWishlist({ userInfo = {} } = {}) {
-    return this.track({ event_name: 'add_to_wishlist', ...userInfo });
+  trackAddToWishlist(params = {}) {
+    const event = new AddToWishlistEvent(params);
+    return this.track(event);
   }
 
   /**
@@ -435,8 +459,9 @@ class KepixelTracker {
    * // Tracking an app open event
    * trackAppOpen({ userInfo: { app_version: '1.0.0' } });
    */
-  trackAppOpen({ userInfo = {} } = {}) {
-    return this.track({ event_name: 'app_open', ...userInfo });
+  trackAppOpen(params = {}) {
+    const event = new AppOpenEvent(params);
+    return this.track(event);
   }
 
   /**
@@ -452,8 +477,9 @@ class KepixelTracker {
    * // Tracking an app install event
    * trackAppInstall({ userInfo: { device_model: 'iPhone 13' } });
    */
-  trackAppInstall({ userInfo = {} } = {}) {
-    return this.track({ event_name: 'app_install', ...userInfo });
+  trackAppInstall(params = {}) {
+    const event = new AppInstallEvent(params);
+    return this.track(event);
   }
 
   /**
@@ -469,8 +495,9 @@ class KepixelTracker {
    * // Tracking a contact event
    * trackContact({ userInfo: { contact_method: 'email' } });
    */
-  trackContact({ userInfo = {} } = {}) {
-    return this.track({ event_name: 'contact', ...userInfo });
+  trackContact(params = {}) {
+    const event = new ContactEvent(params);
+    return this.track(event);
   }
   /**
    * Tracks a schedule event.
@@ -489,24 +516,6 @@ class KepixelTracker {
    * This method is used to record when users submit an application.
    *
    * @param {Object} [options={}] - Options for tracking the submit application event.
-
-  /**
-   * Tracks a subscribe event.
-   *
-   * This method is used to record when users subscribe to a service.
-   *
-   * @param {Object} [options={}] - Options for tracking the subscribe event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
-   * @returns {Promise} A Promise that resolves when the subscribe tracking is complete.
-   *
-   * @example
-   * // Tracking a subscribe event
-   * trackSubscribe({ userInfo: { subscription_type: 'Monthly', value: 9.99, currency: 'USD' } });
-   */
-  trackSubscribe({ userInfo = {} } = {}) {
-    return this.track({ event_name: 'subscribe', ...userInfo });
-  }
-
 
   /**
    * Tracks a send conversion event.
@@ -535,8 +544,9 @@ class KepixelTracker {
    * // Tracking a login event
    * trackLogin({ userInfo: { method: 'email' } });
    */
-  trackLogin({ userInfo = {} } = {}) {
-    return this.track({ event_name: 'login', ...userInfo });
+  trackLogin(params = {}) {
+    const event = new LoginEvent(params);
+    return this.track(event);
   }
 
   /**
@@ -573,8 +583,9 @@ class KepixelTracker {
    * // Tracking a custom event
    * trackCustomEvent({ userInfo: { custom_param: 'value' } });
    */
-  trackCustomEvent({ userInfo = {} } = {}) {
-    return this.track({ event_name: 'custom_event', ...userInfo });
+  trackCustomEvent(params = {}) {
+    const event = new CustomEventEvent(params);
+    return this.track(event);
   }
 
   /**

@@ -27,7 +27,6 @@ const useKepixel = () => {
             trackAppOpen: (params) => instance.trackAppOpen && instance.trackAppOpen(params),
             trackAppInstall: (params) => instance.trackAppInstall && instance.trackAppInstall(params),
             trackContact: (params) => instance.trackContact && instance.trackContact(params),
-            trackSubscribe: (params) => instance.trackSubscribe && instance.trackSubscribe(params),
             trackLogin: (params) => instance.trackLogin && instance.trackLogin(params),
             trackCustomEvent: (params) => instance.trackCustomEvent && instance.trackCustomEvent(params),
             setUserId: (userId) => instance.setUserId && instance.setUserId(userId),
