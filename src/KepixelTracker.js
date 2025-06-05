@@ -25,7 +25,7 @@ import {
   SearchEvent,
   SignUpEvent,
   ViewContentEvent,
-} from '../DTO/index.js';
+} from '../DTO';
 
 class KepixelTracker {
   constructor(userOptions) {
@@ -74,12 +74,12 @@ class KepixelTracker {
    * Tracks app start as an action with a prefixed 'App' category.
    *
    * @param {Object} [options={}] - Tracking options.
-   * @param {Object} [options.userInfo={}] - Optional data for tracking different user info.
+   * @param {Object} [options.user_data={}] - Optional data for tracking different user info.
    * @returns {Promise} A Promise that resolves when the tracking is complete.
    *
    */
-  trackAppStart({ userInfo = {} } = {}) {
-    return this.trackAction({ name: 'App / start', userInfo });
+  trackAppStart({ user_data = {} } = {}) {
+    return this.trackAction({ name: 'App / start', user_data });
   }
 
   /**
@@ -89,7 +89,7 @@ class KepixelTracker {
    *
    * @param {Object} options - Options for tracking the screen view.
    * @param {string} options.name - The title of the screen being tracked. Use slashes (/) to set one or several categories for this screen. For example, 'Help / Feedback' will create the Action 'Feedback' in the category 'Help'.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @throws {Error} Throws an error if the 'name' parameter is not provided.
    * @returns {Promise} A Promise that resolves when the screen view tracking is complete.
    *
@@ -99,14 +99,14 @@ class KepixelTracker {
    *
    * @example
    * // Tracking a screen view with additional user information
-   * trackScreenView({ name: 'Product Details', userInfo: { uid: '123456' } });
+   * trackScreenView({ name: 'Product Details', user_data: { uid: '123456' } });
    */
-  trackScreenView({ name, userInfo = {} }) {
+  trackScreenView({ name, user_data = {} }) {
     if (!name) {
       throw new Error('Error: The "name" parameter is required for tracking a screen view.');
     }
 
-    return this.trackAction({ name: `Screen / ${name}`, userInfo });
+    return this.trackAction({ name: `Screen / ${name}`, user_data });
   }
 
 
@@ -117,7 +117,7 @@ class KepixelTracker {
    *
    * @param {Object} options - Options for tracking the action.
    * @param {string} options.name - The title of the action being tracked. Use slashes (/) to set one or several categories for this action. For example, 'Help / Feedback' will create the Action 'Feedback' in the category 'Help'.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @throws {Error} Throws an error if the 'name' parameter is not provided.
    * @returns {Promise} A Promise that resolves when the action tracking is complete.
    *
@@ -127,15 +127,20 @@ class KepixelTracker {
    *
    * @example
    * // Tracking a custom action with additional user information
-   * trackAction({ name: 'AddToCart', userInfo: { uid: '123456'} });
+   * trackAction({ name: 'AddToCart', user_data: { uid: '123456'} });
    *
    */
-  trackAction({ name, userInfo = {} }) {
+  trackAction({ name, user_data = {}, source, custom_data }) {
     if (!name) {
       throw new Error('Error: The "name" parameter is required for tracking an action.');
     }
 
-    return this.track({ action_name: name, ...userInfo });
+    return this.track({ 
+      action_name: name, 
+      source,
+      user_data: user_data,
+      custom_data
+    });
   }
 
   /**
@@ -149,7 +154,7 @@ class KepixelTracker {
    * @param {string} [options.name] - The event name. (e.g., a Movie name, or Song name, or File name...)
    * @param {number|float} [options.value] - The event value. Must be a float or integer value (numeric), not a string.
    * @param {string} [options.campaign] - The event related campaign.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @throws {Error} Throws an error if the 'category' or 'action' parameters are not provided.
    * @returns {Promise} A Promise that resolves when the event tracking is complete.
    *
@@ -159,10 +164,10 @@ class KepixelTracker {
    *
    * @example
    * // Tracking an event with a name and user information
-   * trackEvent({ category: 'Music', action: 'Pause', name: 'FavoriteSong', userInfo: { uid: '123456'} });
+   * trackEvent({ category: 'Music', action: 'Pause', name: 'FavoriteSong', user_data: { uid: '123456'} });
    *
    */
-  trackEvent({ category, action, name, value, campaign, userInfo = {} }) {
+  trackEvent({ category, action, name, value, campaign, user_data = {}, source, custom_data }) {
     if (!category) {
       throw new Error('Error: The "category" parameter is required for tracking an event.');
     }
@@ -176,7 +181,9 @@ class KepixelTracker {
       e_n: name,
       e_v: value,
       mtm_campaign: campaign,
-      ...userInfo
+      source,
+      user_data: user_data,
+      custom_data
     });
   }
 
@@ -187,7 +194,7 @@ class KepixelTracker {
    *
    * @param {Object} options - Options for tracking the link click.
    * @param {string} options.link - An external URL the user has opened. Used for tracking outlink clicks.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @throws {Error} Throws an error if the 'link' parameter is not provided.
    * @returns {Promise} A Promise that resolves when the link click tracking is complete.
    *
@@ -197,15 +204,21 @@ class KepixelTracker {
    *
    * @example
    * // Tracking a link click with user information
-   * trackLink({ link: 'https://external-site.com', userInfo: { userId: '123456', userRole: 'visitor' } });
+   * trackLink({ link: 'https://external-site.com', user_data: { userId: '123456', userRole: 'visitor' } });
    *
    */
-  trackLink({ link, userInfo = {} }) {
+  trackLink({ link, user_data = {}, source, custom_data }) {
     if (!link) {
       throw new Error('Error: The "link" parameter is required for tracking a link click.');
     }
 
-    return this.track({ link, url: link, ...userInfo });
+    return this.track({ 
+      link, 
+      url: link, 
+      source,
+      user_data: user_data,
+      custom_data
+    });
   }
 
 
@@ -214,9 +227,9 @@ class KepixelTracker {
    *
    * This method is used to record user interactions when downloading files, providing insights into user engagement with downloadable content.
    *
-   * @param {Object} options - Options for tracking the file download.
+   * @param {Object} [options={}] - Options for tracking the download.
    * @param {string} options.download - URL of a file the user has downloaded. Used for tracking downloads.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @throws {Error} Throws an error if the 'download' parameter is not provided.
    * @returns {Promise} A Promise that resolves when the download tracking is complete.
    *
@@ -226,11 +239,16 @@ class KepixelTracker {
    *
    * @example
    * // Tracking a file download with user information
-   * trackDownload({ download: 'https://example.com/files/image.png', userInfo: { uid: '123456' } });
-   *
+   * trackDownload({ download: 'https://example.com/files/image.png', user_data: { uid: '123456' } });
    */
-  trackDownload(params = {}) {
-    const event = new DownloadEvent(params);
+  trackDownload(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new DownloadEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
 
@@ -240,15 +258,21 @@ class KepixelTracker {
    * This method is used to record user purchase events in your application.
    *
    * @param {Object} [options={}] - Options for tracking the purchase.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the purchase tracking is complete.
    *
    * @example
    * // Tracking a purchase
-   * trackPurchase({ userInfo: { value: 100, currency: 'USD', order_id: 'order123' } });
+   * trackPurchase({ user_data: { value: 100, currency: 'USD', order_id: 'order123' } });
    */
-  trackPurchase(params = {}) {
-    const event = new PurchaseEvent(params);
+  trackPurchase(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new PurchaseEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
 
@@ -258,15 +282,21 @@ class KepixelTracker {
    * This method is used to record when users add items to their cart.
    *
    * @param {Object} [options={}] - Options for tracking the add to cart event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the add to cart tracking is complete.
    *
    * @example
    * // Tracking an add to cart event
-   * trackAddToCart({ userInfo: { value: 50, currency: 'USD', content_ids: ['prod123'] } });
+   * trackAddToCart({ user_data: { value: 50, currency: 'USD', content_ids: ['prod123'] } });
    */
-  trackAddToCart(params = {}) {
-    const event = new AddToCartEvent(params);
+  trackAddToCart(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new AddToCartEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
 
@@ -276,7 +306,7 @@ class KepixelTracker {
    * This method is used to record when users express interest in your product or service.
    *
    * @param {Object} [options={}] - Options for tracking the lead event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the lead tracking is complete.
    *
    * @example
@@ -289,15 +319,21 @@ class KepixelTracker {
    * This method is used to record when users view specific content.
    *
    * @param {Object} [options={}] - Options for tracking the view content event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the view content tracking is complete.
    *
    * @example
    * // Tracking a view content event
-   * trackViewContent({ userInfo: { content_ids: ['prod123'], content_type: 'product' } });
+   * trackViewContent({ user_data: { content_ids: ['prod123'], content_type: 'product' } });
    */
-  trackViewContent(params = {}) {
-    const event = new ViewContentEvent(params);
+  trackViewContent(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new ViewContentEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
 
@@ -307,15 +343,21 @@ class KepixelTracker {
    * This method is used to record when users complete a registration process.
    *
    * @param {Object} [options={}] - Options for tracking the complete registration event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the complete registration tracking is complete.
    *
    * @example
    * // Tracking a complete registration event
-   * trackCompleteRegistration({ userInfo: { content_name: 'Account Creation' } });
+   * trackCompleteRegistration({ user_data: { content_name: 'Account Creation' } });
    */
-  trackCompleteRegistration(params = {}) {
-    const event = new CompleteRegistrationEvent(params);
+  trackCompleteRegistration(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new CompleteRegistrationEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
 
@@ -325,15 +367,21 @@ class KepixelTracker {
    * This method is used to record when users perform a search.
    *
    * @param {Object} [options={}] - Options for tracking the search event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the search tracking is complete.
    *
    * @example
    * // Tracking a search event
-   * trackSearch({ userInfo: { search_string: 'shoes' } });
+   * trackSearch({ user_data: { search_string: 'shoes' } });
    */
-  trackSearch(params = {}) {
-    const event = new SearchEvent(params);
+  trackSearch(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new SearchEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
 
@@ -343,15 +391,21 @@ class KepixelTracker {
    * This method is used to record when users begin the checkout process.
    *
    * @param {Object} [options={}] - Options for tracking the initiate checkout event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the initiate checkout tracking is complete.
    *
    * @example
    * // Tracking an initiate checkout event
-   * trackInitiateCheckout({ userInfo: { value: 100, currency: 'USD', content_ids: ['prod123'] } });
+   * trackInitiateCheckout({ user_data: { value: 100, currency: 'USD', content_ids: ['prod123'] } });
    */
-  trackInitiateCheckout(params = {}) {
-    const event = new InitiateCheckoutEvent(params);
+  trackInitiateCheckout(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new InitiateCheckoutEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
 
@@ -361,15 +415,21 @@ class KepixelTracker {
    * This method is used to record when users add payment information.
    *
    * @param {Object} [options={}] - Options for tracking the add payment info event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the add payment info tracking is complete.
    *
    * @example
    * // Tracking an add payment info event
-   * trackAddPaymentInfo({ userInfo: { value: 100, currency: 'USD' } });
+   * trackAddPaymentInfo({ user_data: { value: 100, currency: 'USD' } });
    */
-  trackAddPaymentInfo(params = {}) {
-    const event = new AddPaymentInfoEvent(params);
+  trackAddPaymentInfo(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new AddPaymentInfoEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
 
@@ -379,15 +439,21 @@ class KepixelTracker {
    * This method is used to record when users sign up for a service.
    *
    * @param {Object} [options={}] - Options for tracking the sign up event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the sign up tracking is complete.
    *
    * @example
    * // Tracking a sign up event
-   * trackSignUp({ userInfo: { content_name: 'Newsletter Signup' } });
+   * trackSignUp({ user_data: { content_name: 'Newsletter Signup' } });
    */
-  trackSignUp(params = {}) {
-    const event = new SignUpEvent(params);
+  trackSignUp(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new SignUpEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
 
@@ -398,15 +464,21 @@ class KepixelTracker {
    * This method is used to record when users view a page.
    *
    * @param {Object} [options={}] - Options for tracking the page view event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the page view tracking is complete.
    *
    * @example
    * // Tracking a page view event
-   * trackPageView({ userInfo: { page_url: 'https://example.com/home' } });
+   * trackPageView({ user_data: { page_url: 'https://example.com/home' } });
    */
-  trackPageView(params = {}) {
-    const event = new PageViewEvent(params);
+  trackPageView(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new PageViewEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
 
@@ -416,15 +488,21 @@ class KepixelTracker {
    * This method is used to record when users view a list of items.
    *
    * @param {Object} [options={}] - Options for tracking the list view event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the list view tracking is complete.
    *
    * @example
    * // Tracking a list view event
-   * trackListView({ userInfo: { content_ids: ['prod123', 'prod456'] } });
+   * trackListView({ user_data: { content_ids: ['prod123', 'prod456'] } });
    */
-  trackListView(params = {}) {
-    const event = new ListViewEvent(params);
+  trackListView(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new ListViewEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
 
@@ -434,15 +512,21 @@ class KepixelTracker {
    * This method is used to record when users add items to their wishlist.
    *
    * @param {Object} [options={}] - Options for tracking the add to wishlist event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the add to wishlist tracking is complete.
    *
    * @example
    * // Tracking an add to wishlist event
-   * trackAddToWishlist({ userInfo: { content_ids: ['prod123'] } });
+   * trackAddToWishlist({ user_data: { content_ids: ['prod123'] } });
    */
-  trackAddToWishlist(params = {}) {
-    const event = new AddToWishlistEvent(params);
+  trackAddToWishlist(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new AddToWishlistEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
 
@@ -452,15 +536,21 @@ class KepixelTracker {
    * This method is used to record when users open the app.
    *
    * @param {Object} [options={}] - Options for tracking the app open event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the app open tracking is complete.
    *
    * @example
    * // Tracking an app open event
-   * trackAppOpen({ userInfo: { app_version: '1.0.0' } });
+   * trackAppOpen({ user_data: { app_version: '1.0.0' } });
    */
-  trackAppOpen(params = {}) {
-    const event = new AppOpenEvent(params);
+  trackAppOpen(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new AppOpenEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
 
@@ -470,15 +560,21 @@ class KepixelTracker {
    * This method is used to record when users install the app.
    *
    * @param {Object} [options={}] - Options for tracking the app install event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the app install tracking is complete.
    *
    * @example
    * // Tracking an app install event
-   * trackAppInstall({ userInfo: { device_model: 'iPhone 13' } });
+   * trackAppInstall({ user_data: { device_model: 'iPhone 13' } });
    */
-  trackAppInstall(params = {}) {
-    const event = new AppInstallEvent(params);
+  trackAppInstall(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new AppInstallEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
 
@@ -488,15 +584,21 @@ class KepixelTracker {
    * This method is used to record when users make contact.
    *
    * @param {Object} [options={}] - Options for tracking the contact event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the contact tracking is complete.
    *
    * @example
    * // Tracking a contact event
-   * trackContact({ userInfo: { contact_method: 'email' } });
+   * trackContact({ user_data: { contact_method: 'email' } });
    */
-  trackContact(params = {}) {
-    const event = new ContactEvent(params);
+  trackContact(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new ContactEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
   /**
@@ -523,29 +625,35 @@ class KepixelTracker {
    * This method is used to record conversion events.
    *
    * @param {Object} [options={}] - Options for tracking the send conversion event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
   /**
    * Tracks a conversion adjustment event.
    *
    * This method is used to record conversion adjustment events.
    *
    * @param {Object} [options={}] - Options for tracking the conversion adjustment event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
   /**
    * Tracks a login event.
    *
    * This method is used to record when users log in.
    *
    * @param {Object} [options={}] - Options for tracking the login event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the login tracking is complete.
    *
    * @example
    * // Tracking a login event
-   * trackLogin({ userInfo: { method: 'email' } });
+   * trackLogin({ user_data: { method: 'email' } });
    */
-  trackLogin(params = {}) {
-    const event = new LoginEvent(params);
+  trackLogin(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new LoginEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
 
@@ -555,7 +663,7 @@ class KepixelTracker {
    * This method is used to record when users begin a tutorial.
    *
    * @param {Object} [options={}] - Options for tracking the tutorial begin event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
   /**
    * Tracks a join group event.
    *
@@ -569,22 +677,28 @@ class KepixelTracker {
    * This method is used to record qualified lead events.
    *
    * @param {Object} [options={}] - Options for tracking the qualified lead event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
   /**
    * Tracks a custom event.
    *
    * This method is used to record custom events.
    *
    * @param {Object} [options={}] - Options for tracking the custom event.
-   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information.
+   * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
    * @returns {Promise} A Promise that resolves when the custom event tracking is complete.
    *
    * @example
    * // Tracking a custom event
-   * trackCustomEvent({ userInfo: { custom_param: 'value' } });
+   * trackCustomEvent({ user_data: { custom_param: 'value' } });
    */
-  trackCustomEvent(params = {}) {
-    const event = new CustomEventEvent(params);
+  trackCustomEvent(options = {}) {
+    const { user_data, source, custom_data, ...rest } = options;
+    const event = new CustomEventEvent({
+      ...rest,
+      source,
+      user_data: user_data,
+      custom_data
+    });
     return this.track(event);
   }
 
