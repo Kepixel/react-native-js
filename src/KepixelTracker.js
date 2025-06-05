@@ -79,7 +79,7 @@ class KepixelTracker {
    *
    */
   trackAppStart({ user_data = {} } = {}) {
-    return this.trackAction({ name: 'App / start', user_data });
+    return this.trackAction({ name: 'App / start', userInfo: user_data });
   }
 
   /**
@@ -106,7 +106,7 @@ class KepixelTracker {
       throw new Error('Error: The "name" parameter is required for tracking a screen view.');
     }
 
-    return this.trackAction({ name: `Screen / ${name}`, user_data });
+    return this.trackAction({ name: `Screen / ${name}`, userInfo: user_data });
   }
 
 
@@ -130,17 +130,12 @@ class KepixelTracker {
    * trackAction({ name: 'AddToCart', user_data: { uid: '123456'} });
    *
    */
-  trackAction({ name, user_data = {}, source, custom_data }) {
+  trackAction({ name, user_data = {} }) {
     if (!name) {
       throw new Error('Error: The "name" parameter is required for tracking an action.');
     }
 
-    return this.track({ 
-      action_name: name, 
-      source,
-      user_data: user_data,
-      custom_data
-    });
+    return this.track({ action_name: name, userInfo: user_data });
   }
 
   /**
@@ -175,16 +170,15 @@ class KepixelTracker {
       throw new Error('Error: The "action" parameter is required for tracking an event.');
     }
 
-    return this.track({
-      e_c: category,
-      e_a: action,
-      e_n: name,
-      e_v: value,
-      mtm_campaign: campaign,
-      source,
-      user_data: user_data,
-      custom_data
-    });
+      return this.track({
+          e_c: category,
+          e_a: action,
+          e_n: name,
+          e_v: value,
+          mtm_campaign: campaign,
+          userInfo: user_data,
+          ...user_data
+      });
   }
 
   /**
@@ -212,13 +206,8 @@ class KepixelTracker {
       throw new Error('Error: The "link" parameter is required for tracking a link click.');
     }
 
-    return this.track({ 
-      link, 
-      url: link, 
-      source,
-      user_data: user_data,
-      custom_data
-    });
+      return this.track({ link, url: link, userInfo: user_data,
+          ...user_data });
   }
 
 
@@ -249,7 +238,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
 
   /**
@@ -273,7 +264,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
 
   /**
@@ -297,7 +290,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
 
   /**
@@ -334,7 +329,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
 
   /**
@@ -358,7 +355,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
 
   /**
@@ -382,7 +381,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
 
   /**
@@ -406,7 +407,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
 
   /**
@@ -430,7 +433,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
 
   /**
@@ -454,7 +459,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
 
 
@@ -479,7 +486,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
 
   /**
@@ -503,7 +512,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
 
   /**
@@ -527,7 +538,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
 
   /**
@@ -551,7 +564,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
 
   /**
@@ -575,7 +590,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
 
   /**
@@ -599,7 +616,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
   /**
    * Tracks a schedule event.
@@ -654,7 +673,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
 
   /**
@@ -699,7 +720,9 @@ class KepixelTracker {
       user_data: user_data,
       custom_data
     });
-    return this.track(event);
+    return this.trackEvent({
+
+    });
   }
 
   /**
