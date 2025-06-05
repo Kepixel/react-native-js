@@ -203,7 +203,7 @@ class KepixelTracker {
      * trackLink({ link: 'https://external-site.com', user_data: { userId: '123456', userRole: 'visitor' } });
      *
      */
-    trackLink({link, user_data = {}, source, custom_data}) {
+    trackLink({link, user_data = {}}) {
         if (!link) {
             throw new Error('Error: The "link" parameter is required for tracking a link click.');
         }
@@ -235,7 +235,7 @@ class KepixelTracker {
      * trackDownload({ download: 'https://example.com/files/image.png', user_data: { uid: '123456' } });
      */
     trackDownload(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new DownloadEvent({
             ...rest,
             source,
@@ -243,13 +243,19 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
@@ -267,7 +273,7 @@ class KepixelTracker {
      * trackPurchase({ user_data: { value: 100, currency: 'USD', order_id: 'order123' } });
      */
     trackPurchase(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new PurchaseEvent({
             ...rest,
             source,
@@ -275,13 +281,24 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data,
+                value: event.value,
+                currency: event.currency,
+                items: event.items,
+                order_id: event.order_id,
+                description: event.description
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
@@ -299,7 +316,7 @@ class KepixelTracker {
      * trackAddToCart({ user_data: { value: 50, currency: 'USD', content_ids: ['prod123'] } });
      */
     trackAddToCart(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new AddToCartEvent({
             ...rest,
             source,
@@ -307,13 +324,23 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data,
+                value: event.value,
+                currency: event.currency,
+                items: event.items,
+                description: event.description
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
@@ -344,7 +371,7 @@ class KepixelTracker {
      * trackViewContent({ user_data: { content_ids: ['prod123'], content_type: 'product' } });
      */
     trackViewContent(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new ViewContentEvent({
             ...rest,
             source,
@@ -352,13 +379,24 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data,
+                id: event.id,
+                name: event.name,
+                currency: event.currency,
+                type: event.type,
+                value: event.value
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
@@ -376,7 +414,7 @@ class KepixelTracker {
      * trackCompleteRegistration({ user_data: { content_name: 'Account Creation' } });
      */
     trackCompleteRegistration(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new CompleteRegistrationEvent({
             ...rest,
             source,
@@ -384,13 +422,19 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
@@ -408,7 +452,7 @@ class KepixelTracker {
      * trackSearch({ user_data: { search_string: 'shoes' } });
      */
     trackSearch(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new SearchEvent({
             ...rest,
             source,
@@ -416,13 +460,20 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data,
+                search_string: event.search_string
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
@@ -440,7 +491,7 @@ class KepixelTracker {
      * trackInitiateCheckout({ user_data: { value: 100, currency: 'USD', content_ids: ['prod123'] } });
      */
     trackInitiateCheckout(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new InitiateCheckoutEvent({
             ...rest,
             source,
@@ -448,13 +499,22 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data,
+                value: event.value,
+                currency: event.currency,
+                items: event.items
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
@@ -472,7 +532,7 @@ class KepixelTracker {
      * trackAddPaymentInfo({ user_data: { value: 100, currency: 'USD' } });
      */
     trackAddPaymentInfo(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new AddPaymentInfoEvent({
             ...rest,
             source,
@@ -480,13 +540,22 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data,
+                value: event.value,
+                currency: event.currency,
+                items: event.items
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
@@ -504,7 +573,7 @@ class KepixelTracker {
      * trackSignUp({ user_data: { content_name: 'Newsletter Signup' } });
      */
     trackSignUp(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new SignUpEvent({
             ...rest,
             source,
@@ -512,13 +581,19 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
@@ -537,7 +612,7 @@ class KepixelTracker {
      * trackPageView({ user_data: { page_url: 'https://example.com/home' } });
      */
     trackPageView(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new PageViewEvent({
             ...rest,
             source,
@@ -545,13 +620,23 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data,
+                id: event.id,
+                name: event.name,
+                category: event.category,
+                type: event.type
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
@@ -569,7 +654,7 @@ class KepixelTracker {
      * trackListView({ user_data: { content_ids: ['prod123', 'prod456'] } });
      */
     trackListView(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new ListViewEvent({
             ...rest,
             source,
@@ -577,13 +662,23 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data,
+                id: event.id,
+                name: event.name,
+                category: event.category,
+                type: event.type
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
@@ -601,7 +696,7 @@ class KepixelTracker {
      * trackAddToWishlist({ user_data: { content_ids: ['prod123'] } });
      */
     trackAddToWishlist(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new AddToWishlistEvent({
             ...rest,
             source,
@@ -609,13 +704,20 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data,
+                items: event.items
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
@@ -633,7 +735,7 @@ class KepixelTracker {
      * trackAppOpen({ user_data: { app_version: '1.0.0' } });
      */
     trackAppOpen(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new AppOpenEvent({
             ...rest,
             source,
@@ -641,13 +743,19 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
@@ -665,7 +773,7 @@ class KepixelTracker {
      * trackAppInstall({ user_data: { device_model: 'iPhone 13' } });
      */
     trackAppInstall(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new AppInstallEvent({
             ...rest,
             source,
@@ -673,13 +781,19 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
@@ -697,7 +811,7 @@ class KepixelTracker {
      * trackContact({ user_data: { contact_method: 'email' } });
      */
     trackContact(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new ContactEvent({
             ...rest,
             source,
@@ -705,13 +819,19 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
@@ -761,7 +881,7 @@ class KepixelTracker {
      * trackLogin({ user_data: { method: 'email' } });
      */
     trackLogin(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new LoginEvent({
             ...rest,
             source,
@@ -769,13 +889,19 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
@@ -814,7 +940,7 @@ class KepixelTracker {
      * trackCustomEvent({ user_data: { custom_param: 'value' } });
      */
     trackCustomEvent(options = {}) {
-        const {user_data, source, custom_data, ...rest} = options;
+        const {user_data, source, campaign, custom_data, ...rest} = options;
         const event = new CustomEventEvent({
             ...rest,
             source,
@@ -822,13 +948,19 @@ class KepixelTracker {
             custom_data
         });
         return this.trackEvent({
-            category: '',
-            action: '',
-            name: '',
-            value: '',
-            campaign: '', user_data: '',
-            source: '',
-            custom_data: ''
+            category: event.event_name,
+            action: event.event_name,
+            name: event.event_name,
+            value: JSON.stringify({
+                campaign: campaign,
+                user_data: user_data,
+                source: source,
+                custom_data: custom_data
+            }),
+            campaign: campaign,
+            user_data: user_data,
+            source: source,
+            custom_data: custom_data
         });
     }
 
