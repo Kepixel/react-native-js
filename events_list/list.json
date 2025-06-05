@@ -3,701 +3,262 @@
     "event_name": "purchase",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
-    "custom_data": {
-      "value": 100,
-      "currency": "USD",
-      "content_ids": [
-        "prod123"
-      ],
-      "contents": [
-        {
-          "id": "prod123",
-          "quantity": 1
-        }
-      ],
-      "content_type": "product",
-      "number_of_items": 1,
-      "order_id": "order123",
-      "description": "Example description"
-    },
-    "event_source_url": "https://example.com/page"
+    "value": 100,
+    "currency": "USD",
+    "items": [
+      {
+        "id": "prod123",
+        "name": "Example Product",
+        "currency": "USD",
+        "value": 100,
+        "quantity": 1,
+        "type": "product"
+      }
+    ],
+    "order_id": "order123",
+    "description": "Example description",
+    "source": "website"
   },
   "addToCart": {
-    "event_name": "addToCart",
+    "event_name": "add_to_cart",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
-    "custom_data": {
-      "value": 100,
-      "currency": "USD",
-      "content_ids": [
-        "prod123"
-      ],
-      "contents": [
-        {
-          "id": "prod123",
-          "quantity": 1
-        }
-      ],
-      "content_type": "product",
-      "number_of_items": 1
-    },
-    "event_source_url": "https://example.com/page"
-  },
-  "lead": {
-    "event_name": "lead",
-    "event_id": "unique_event_id_12345",
-    "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
-    "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-    },
-    "custom_data": {
-      "value": 100,
-      "currency": "USD",
-      "content_name": "Example Content",
-      "content_category": "Example Category"
-    },
-    "event_source_url": "https://example.com/page"
+    "value": 100,
+    "currency": "USD",
+    "items": [
+      {
+        "id": "prod123",
+        "name": "Example Product",
+        "currency": "USD",
+        "value": 100,
+        "quantity": 1,
+        "type": "product"
+      }
+    ],
+    "source": "website"
   },
   "viewContent": {
-    "event_name": "viewContent",
+    "event_name": "view_content",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
-    "custom_data": {
-      "value": 100,
-      "currency": "USD",
-      "content_ids": [
-        "prod123"
-      ],
-      "contents": [
-        {
-          "id": "prod123",
-          "quantity": 1
-        }
-      ],
-      "content_type": "product",
-      "number_of_items": 1,
-      "content_name": "Example Content",
-      "content_category": "Example Category"
-    },
-    "event_source_url": "https://example.com/page"
+    "id": "prod123",
+    "name": "Example Content",
+    "currency": "USD",
+    "value": 3,
+    "type": "product",
+    "source": "website"
   },
   "completeRegistration": {
-    "event_name": "completeRegistration",
+    "event_name": "complete_registration",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
-    "custom_data": {
-      "value": 100,
-      "currency": "USD",
-      "content_name": "Example Content",
-      "content_category": "Example Category"
-    },
-    "event_source_url": "https://example.com/page"
+    "source": "website"
   },
   "search": {
     "event_name": "search",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
     "custom_data": {
-      "search_string": "example search",
-      "value": 100,
-      "currency": "USD"
+      "search_string": "example search"
     },
-    "event_source_url": "https://example.com/page"
+    "source": "website"
   },
   "initiateCheckout": {
     "event_name": "initiateCheckout",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
-    "custom_data": {
-      "value": 100,
-      "currency": "USD",
-      "content_ids": [
-        "prod123"
-      ],
-      "contents": [
-        {
-          "id": "prod123",
-          "quantity": 1
-        }
-      ],
-      "content_type": "product",
-      "number_of_items": 1
-    },
-    "event_source_url": "https://example.com/page"
+    "value": 100,
+    "currency": "USD",
+    "items": [
+      {
+        "id": "prod123",
+        "name": "Example Product",
+        "quantity": 1,
+        "type": "product"
+      }
+    ],
+    "source": "website"
   },
   "addPaymentInfo": {
-    "event_name": "addPaymentInfo",
+    "event_name": "add_payment_info",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
-    "custom_data": {
-      "value": 100,
-      "currency": "USD",
-      "content_ids": [
-        "prod123"
-      ],
-      "contents": [
-        {
-          "id": "prod123",
-          "quantity": 1
-        }
-      ],
-      "content_type": "product",
-      "number_of_items": 1
-    },
-    "event_source_url": "https://example.com/page"
+    "value": 100,
+    "currency": "USD",
+    "items": [
+      {
+        "id": "prod123",
+        "name": "Example Product",
+        "type": "product",
+        "value": 100,
+        "currency": "USD",
+        "quantity": 1
+      }
+    ],
+    "source": "website"
   },
   "signUp": {
     "event_name": "signUp",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
-    "custom_data": {
-      "value": 100,
-      "currency": "USD",
-      "content_name": "Example Content",
-      "content_category": "Example Category"
-    },
-    "event_source_url": "https://example.com/page"
-  },
-  "startCheckout": {
-    "event_name": "startCheckout",
-    "event_id": "unique_event_id_12345",
-    "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
-    "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-    },
-    "custom_data": {
-      "value": 100,
-      "currency": "USD",
-      "content_ids": [
-        "prod123"
-      ],
-      "contents": [
-        {
-          "id": "prod123",
-          "quantity": 1
-        }
-      ],
-      "content_type": "product",
-      "number_of_items": 1
-    },
-    "event_source_url": "https://example.com/page"
+    "custom_data": {},
+    "source": "website"
   },
   "pageView": {
     "event_name": "pageView",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
-    "custom_data": {
-      "content_type": "product",
-      "content_ids": [
-        "prod123"
-      ],
-      "contents": [
-        {
-          "id": "prod123",
-          "quantity": 1
-        }
-      ],
-      "content_name": "Example Content",
-      "content_category": "Example Category"
-    },
-    "event_source_url": "https://example.com/page"
+    "id": "prod123",
+    "name": "Example Content",
+    "category": "Example Category",
+    "type": "product",
+    "source": "website"
   },
   "listView": {
     "event_name": "listView",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
-    "custom_data": {
-      "content_type": "product",
-      "content_ids": [
-        "prod123"
-      ],
-      "contents": [
-        {
-          "id": "prod123",
-          "quantity": 1
-        }
-      ],
-      "content_name": "Example Content",
-      "content_category": "Example Category"
-    },
-    "event_source_url": "https://example.com/page"
+    "id": "prod123",
+    "name": "Example Content",
+    "category": "Example Category",
+    "type": "product",
+    "source": "website"
   },
   "addToWishlist": {
-    "event_name": "addToWishlist",
+    "event_name": "add_to_wishlist",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
-    "custom_data": {
-      "content_type": "product",
-      "content_ids": [
-        "prod123"
-      ],
-      "contents": [
-        {
-          "id": "prod123",
-          "quantity": 1
-        }
-      ],
-      "content_name": "Example Content",
-      "content_category": "Example Category"
-    },
-    "event_source_url": "https://example.com/page"
+    "items": [
+      {
+        "id": "prod123",
+        "name": "Example Product",
+        "currency": "USD",
+        "value": 100,
+        "quantity": 1,
+        "type": "product"
+      }
+    ],
+    "source": "website"
   },
   "appOpen": {
     "event_name": "appOpen",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "app",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (compatible; App)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
-    "custom_data": {
-      "custom_param": "custom_value"
-    },
-    "event_source_url": "https://example.com/app"
+    "source": "app"
   },
   "appInstall": {
     "event_name": "appInstall",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "app",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (compatible; App)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
-    "custom_data": {
-      "custom_param": "custom_value"
-    },
-    "event_source_url": "https://example.com/app"
+    "source": "app"
   },
   "contact": {
     "event_name": "contact",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
-    "custom_data": {
-      "custom_param": "custom_value"
-    },
-    "event_source_url": "https://example.com/page"
-  },
-  "customizeProduct": {
-    "event_name": "customizeProduct",
-    "event_id": "unique_event_id_12345",
-    "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
-    "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-    },
-    "custom_data": {
-      "content_type": "product",
-      "content_ids": [
-        "prod123"
-      ],
-      "contents": [
-        {
-          "id": "prod123",
-          "quantity": 1
-        }
-      ],
-      "content_name": "Example Content",
-      "content_category": "Example Category"
-    },
-    "event_source_url": "https://example.com/page"
-  },
-  "donate": {
-    "event_name": "donate",
-    "event_id": "unique_event_id_12345",
-    "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
-    "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-    },
-    "custom_data": {
-      "value": 100,
-      "currency": "USD",
-      "content_name": "Example Cause",
-      "content_category": "Donation"
-    },
-    "event_source_url": "https://example.com/page"
-  },
-  "findLocation": {
-    "event_name": "findLocation",
-    "event_id": "unique_event_id_12345",
-    "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
-    "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-    },
-    "custom_data": {
-      "custom_param": "custom_value"
-    },
-    "event_source_url": "https://example.com/page"
-  },
-  "schedule": {
-    "event_name": "schedule",
-    "event_id": "unique_event_id_12345",
-    "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
-    "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-    },
-    "custom_data": {
-      "custom_param": "custom_value"
-    },
-    "event_source_url": "https://example.com/page"
-  },
-  "startTrial": {
-    "event_name": "startTrial",
-    "event_id": "unique_event_id_12345",
-    "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
-    "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-    },
-    "custom_data": {
-      "value": 100,
-      "currency": "USD",
-      "content_ids": [
-        "prod123"
-      ],
-      "contents": [
-        {
-          "id": "prod123",
-          "quantity": 1
-        }
-      ],
-      "content_type": "product",
-      "number_of_items": 1
-    },
-    "event_source_url": "https://example.com/page"
-  },
-  "submitApplication": {
-    "event_name": "submitApplication",
-    "event_id": "unique_event_id_12345",
-    "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
-    "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-    },
-    "custom_data": {
-      "custom_param": "custom_value"
-    },
-    "event_source_url": "https://example.com/page"
-  },
-  "subscribe": {
-    "event_name": "subscribe",
-    "event_id": "unique_event_id_12345",
-    "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
-    "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-    },
-    "custom_data": {
-      "value": 100,
-      "currency": "USD",
-      "content_name": "Example Subscription",
-      "content_category": "Subscription"
-    },
-    "event_source_url": "https://example.com/page"
-  },
-  "install": {
-    "event_name": "install",
-    "event_id": "unique_event_id_12345",
-    "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "app",
-    "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (compatible; App)"
-    },
-    "custom_data": {
-      "custom_param": "custom_value"
-    },
-    "event_source_url": "https://example.com/app"
-  },
-  "sendConversion": {
-    "event_name": "sendConversion",
-    "event_id": "unique_event_id_12345",
-    "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
-    "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-    },
-    "custom_data": {
-      "value": 100,
-      "currency": "USD",
-      "order_id": "order123"
-    },
-    "event_source_url": "https://example.com/page"
-  },
-  "conversionAdjustment": {
-    "event_name": "conversionAdjustment",
-    "event_id": "unique_event_id_12345",
-    "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
-    "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-    },
-    "custom_data": {
-      "value": 100,
-      "currency": "USD",
-      "order_id": "order123"
-    },
-    "event_source_url": "https://example.com/page"
+    "source": "website"
   },
   "login": {
     "event_name": "login",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
-    "custom_data": {
-      "custom_param": "custom_value"
-    },
-    "event_source_url": "https://example.com/page"
-  },
-  "tutorialBegin": {
-    "event_name": "tutorialBegin",
-    "event_id": "unique_event_id_12345",
-    "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
-    "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-    },
-    "custom_data": {
-      "custom_param": "custom_value"
-    },
-    "event_source_url": "https://example.com/page"
-  },
-  "joinGroup": {
-    "event_name": "joinGroup",
-    "event_id": "unique_event_id_12345",
-    "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
-    "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-    },
-    "custom_data": {
-      "group_id": "group123",
-      "custom_param": "custom_value"
-    },
-    "event_source_url": "https://example.com/page"
+    "source": "website"
   },
   "download": {
     "event_name": "download",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
-    "custom_data": {
-      "custom_param": "custom_value"
-    },
-    "event_source_url": "https://example.com/page"
-  },
-  "qualifiedLead": {
-    "event_name": "qualifiedLead",
-    "event_id": "unique_event_id_12345",
-    "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
-    "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-    },
-    "custom_data": {
-      "value": 100,
-      "currency": "USD",
-      "content_name": "Example Content",
-      "content_category": "Example Category"
-    },
-    "event_source_url": "https://example.com/page"
+    "source": "website"
   },
   "customEvent": {
     "event_name": "customEvent",
     "event_id": "unique_event_id_12345",
     "event_time": "2025-06-02T12:00:00Z",
-    "action_source": "website",
     "user_data": {
-      "em": "hashed_email_example",
-      "ph": "hashed_phone_example",
-      "external_id": "external_user_id_example",
-      "client_ip_address": "hashed_ip_example",
-      "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      "email": "hashed_email_example",
+      "phone": "hashed_phone_example",
+      "id": "external_user_id_example"
     },
-    "custom_data": {
-      "custom_param": "custom_value"
-    },
-    "event_source_url": "https://example.com/page"
+    "source": "website"
   }
 }
