@@ -116,4 +116,8 @@ trackEvent({
 2. **Optional Parameters:** Use `userId` as needed to customize the tracking behavior.
 3. **Error Handling:** Add appropriate error handling where necessary to ensure smooth integration.
 
+### Event Examples
+
+For detailed examples of how to track each type of event (ViewContent, AddToCart, Purchase, etc.), please refer to the [EXAMPLES.md](./EXAMPLES.md) file.
+
 By following this structure, you can effectively integrate and use the Kepixel React Native library in your project.
