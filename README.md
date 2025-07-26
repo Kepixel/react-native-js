@@ -3,7 +3,7 @@
 #### 1. **Installation**
 Install the Kepixel React Native JS library by running:
 ```bash
-npm install https://github.com/Kepixel/react-native-js
+npm install @kepixel/react-native-sdk
 ```
 
 #### 2. **Android Configuration**
@@ -34,7 +34,7 @@ pod install
 import KepixelTracker, {
   KepixelProvider,
   useKepixel,
-} from 'kepixel-jstracker-react-native';
+} from '@kepixel/react-native-sdk';
 
 let instance = null;
 const { trackAppStart } = useKepixel();
