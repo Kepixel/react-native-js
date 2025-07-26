@@ -1700,7 +1700,7 @@ class KepixelTracker {
             let bodyObj = {
                 "userId": this.userId,
                 "event": eventName,
-                "properties": e.e_n,
+                "properties": data.e_n,
                 "traits": {
                     ...data.userInfo
                 },
@@ -1771,7 +1771,6 @@ class KepixelTracker {
 
         return fetch(`${this.trackerUrl}?${url}`, fetchObj)
             .then((response) => {
-                console.log("RESPONSE TRACK", response);
                 if (!response.ok) {
                     throw Error(response.statusText);
                 }
