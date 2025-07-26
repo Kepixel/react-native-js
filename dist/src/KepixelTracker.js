@@ -9,7 +9,6 @@
  * @param {boolean} [userOptions.log=false] - Indicates if logging is enabled.
  */
 import { AddPaymentInfoEvent, AddToCartEvent, AddToWishlistEvent, AppInstallEvent, AppOpenEvent, CompleteRegistrationEvent, ContactEvent, CustomEventEvent, DownloadEvent, InitiateCheckoutEvent, ListViewEvent, LoginEvent, PageViewEvent, PurchaseEvent, SearchEvent, SignUpEvent, ViewContentEvent, } from '../DTO/index.js';
-import rudderClient, { RUDDER_LOG_LEVEL } from '@rudderstack/rudder-sdk-react-native';
 class KepixelTracker {
     constructor(userOptions) {
         this.log = false;
@@ -89,11 +88,6 @@ class KepixelTracker {
         if (userId) {
             this.userId = userId;
         }
-        await rudderClient.setup(appId, {
-            dataPlaneUrl: this.trackerUrl,
-            trackAppLifecycleEvents: true,
-            logLevel: RUDDER_LOG_LEVEL.DEBUG
-        });
         log &&
             console.log('Kepixel tracking is enabled for:', {
                 trackerUrl: this.trackerUrl,
