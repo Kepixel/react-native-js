@@ -1494,10 +1494,11 @@ class KepixelTracker {
         // Generate a dynamic timestamp in ISO 8601 format (yyyy-MM-ddTHH:mm:ss.SSSZ)
         const currentTimestamp = new Date().toISOString();
         const identifyPayload = {
-            userId: this.userId || "identified user id",
-            anonymousId: "anon-id-new",
+            userId: this.userId,
             context: {
-                traits: (_a = data.userInfo) !== null && _a !== void 0 ? _a : {},
+                traits: {
+                    ...data.userInfo
+                },
                 library: {
                     name: "http"
                 }
@@ -1505,8 +1506,83 @@ class KepixelTracker {
             timestamp: currentTimestamp
         };
         // Call identifyUser and don't wait for the response to continue processing
-        this.identifyUser(identifyPayload);
-        data.e_n = JSON.stringify(data.e_n);
+        await this.identifyUser(identifyPayload);
+        if (data.e_c) {
+            // map event category to Kepixel's event name
+            const eventCategoryMap = {
+                'product_clicked': 'Product Clicked',
+                'product_viewed': 'Product Viewed',
+                'product_added': 'Product Added',
+                'product_removed': 'Product Removed',
+                'cart_viewed': 'Cart Viewed',
+                'checkout_started': 'Checkout Started',
+                'checkout_step_viewed': 'Checkout Step Viewed',
+                'checkout_step_completed': 'Checkout Step Completed',
+                'payment_info_entered': 'Payment Info Entered',
+                'order_updated': 'Order Updated',
+                'order_completed': 'Order Completed',
+                'order_refunded': 'Order Refunded',
+                'order_cancelled': 'Order Cancelled',
+                'coupon_entered': 'Coupon Entered',
+                'coupon_applied': 'Coupon Applied',
+                'coupon_denied': 'Coupon Denied',
+                'coupon_removed': 'Coupon Removed',
+                'products_searched': 'Products Searched',
+                'product_list_viewed': 'Product List Viewed',
+                'product_list_filtered': 'Product List Filtered',
+                'product_added_to_wishlist': 'Product Added to Wishlist',
+                'product_removed_from_wishlist': 'Product Removed from Wishlist',
+                'wishlist_product_added_to_cart': 'Wishlist Product Added to Cart',
+                'product_shared': 'Product Shared',
+                'cart_shared': 'Cart Shared',
+                'promotion_viewed': 'Promotion Viewed',
+                'promotion_clicked': 'Promotion Clicked',
+                'product_reviewed': 'Product Reviewed',
+                'page_loaded': 'Page Loaded'
+            };
+            // Get the event name from the map or use the category as fallback
+            const eventName = (_a = eventCategoryMap[data.e_c]) !== null && _a !== void 0 ? _a : null;
+            if (!eventName) {
+                console.warn('KepixelTracker: Invalid event category:', data.e_c);
+                return;
+            }
+            let bodyObj = {
+                "userId": this.userId,
+                "event": eventName,
+                "properties": e.e_n,
+                "traits": {
+                    ...data.userInfo
+                },
+                "context": {
+                    "library": {
+                        "name": "http"
+                    }
+                },
+                "timestamp": currentTimestamp
+            };
+            const fetchObj = {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${this.encodedAppId}`,
+                },
+                body: JSON.stringify(bodyObj)
+            };
+            return fetch(`${this.trackerUrl}/v1/track`, fetchObj)
+                .then((response) => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                this.log && console.log('Kepixel identify call sent:', this.trackerUrl, fetchObj);
+                return response;
+            })
+                .catch((error) => {
+                this.log && console.log('Kepixel track call failed:', this.trackerUrl, fetchObj);
+                console.warn('Kepixel track error:', error);
+                return error;
+            });
+        }
         let body = {
             appid: this.appId,
             rec: 1,
