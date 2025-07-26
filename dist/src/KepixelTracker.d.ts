@@ -6,16 +6,10 @@ interface TrackerOptions {
 declare class KepixelTracker {
     trackerUrl: string;
     appId: string;
+    encodedAppId: string;
     userId?: string;
     log: boolean;
-    initializationPromise: Promise<void>;
     constructor(userOptions: TrackerOptions);
-    /**
-     * Returns a promise that resolves when initialization is complete.
-     *
-     * @returns {Promise} A promise that resolves when initialization is complete.
-     */
-    getInitializationPromise(): Promise<void>;
     /**
      * Validates user_data object to ensure it has at least one required property.
      *
@@ -52,8 +46,16 @@ declare class KepixelTracker {
         appId: any;
         userId: any;
         log?: boolean;
-    }): Promise<void>;
+    }): void;
     setUserId(userId: any): void;
+    /**
+     * Sends an identify call to the server.
+     *
+     * @param {Object} data - The identify payload.
+     * @returns {Promise} A Promise that resolves when the identify call is complete.
+     * @private
+     */
+    identifyUser(data: any): Promise<any>;
     setAppId(appId: any): void;
     /**
      * Tracks app start as an action with a prefixed 'App' category.

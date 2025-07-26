@@ -3,43 +3,17 @@
 #### 1. **Installation**
 Install the Kepixel React Native JS library by running:
 ```bash
-npm install @kepixel/react-native-sdk
+npm install https://github.com/Kepixel/react-native-js
 ```
 
-If installing directly from the repository, build the library first:
-```bash
-npm run build
-```
-
-#### 2. **Android Configuration**
-For Android: Make sure you have added mavenCentral() as a repository in your project level build.gradle file, as shown below:
-```gradle
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
-allprojects {
-    repositories {
-        mavenCentral()
-    }
-}
-```
-
-#### 3. **iOS Configuration**
-For iOS: Navigate to the ios folder of your application and install all the dependencies with:
-```bash
-pod install
-```
-
-#### 4. **Setup in `App.js`**
+#### 2. **Setup in `App.js`**
 
 ##### Import Required Modules and Create an Instance:
 ```javascript
 import KepixelTracker, {
   KepixelProvider,
   useKepixel,
-} from '@kepixel/react-native-sdk';
+} from 'kepixel-jstracker-react-native';
 
 let instance = null;
 const { trackAppStart } = useKepixel();
@@ -58,7 +32,7 @@ useEffect(() => {
 }, []);
 ```
 
-#### 5. **Wrap Your Application**
+#### 3. **Wrap Your Application**
 Wrap your app's root container with the `KepixelProvider`:
 ```javascript
 <KepixelProvider instance={instance}>
@@ -66,7 +40,7 @@ Wrap your app's root container with the `KepixelProvider`:
 </KepixelProvider>
 ```
 
-#### 6. **Setting User ID**
+#### 4. **Setting User ID**
 ##### Add User Information:
 Set the user ID (e.g., phone number or email) after login:
 ```javascript
@@ -81,7 +55,7 @@ Clear the user ID when the user logs out:
 setUserId("");
 ```
 
-#### 7. **Track Events**
+#### 5. **Track Events**
 
 ##### Basic Event Tracking:
 Track an event with category and action:
@@ -100,7 +74,7 @@ trackEvent({
 });
 ```
 
-#### 8. **Custom Data for Events**
+#### 6. **Custom Data for Events**
 ##### Example: Content View Tracking
 Define custom data as an array of key-value pairs:
 ```javascript

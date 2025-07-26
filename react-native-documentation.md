@@ -29,9 +29,7 @@ The Kepixel React Native SDK is a powerful tracking library designed to help you
 To install the Kepixel React Native SDK, run the following command in your project directory:
 
 ```bash
-npm install react-native-kepixel
-# or
-yarn add react-native-kepixel
+npm install https://github.com/Kepixel/react-native-js
 ```
 
 ## Setup

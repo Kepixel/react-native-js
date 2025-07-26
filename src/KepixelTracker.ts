@@ -37,25 +37,16 @@ interface TrackerOptions {
 class KepixelTracker {
     trackerUrl!: string;
     appId!: string;
+    encodedAppId!: string;
     userId?: string;
     log: boolean = false;
-    initializationPromise!: Promise<void>;
 
     constructor(userOptions: TrackerOptions) {
         if (!userOptions.appId) {
             throw new Error('appId is required for Kepixel tracking.');
         }
 
-        this.initializationPromise = this.initialize(userOptions);
-    }
-
-    /**
-     * Returns a promise that resolves when initialization is complete.
-     *
-     * @returns {Promise} A promise that resolves when initialization is complete.
-     */
-    getInitializationPromise() {
-        return this.initializationPromise;
+        this.initialize(userOptions);
     }
 
     /**
@@ -123,11 +114,12 @@ class KepixelTracker {
      * @param {string} [options.userId] - The user ID for tracking.
      * @param {boolean} [options.log=false] - Indicates if logging is enabled.
      */
-    async initialize({appId, userId, log = false}) {
+    initialize({appId, userId, log = false}) {
         this.log = log;
 
         this.trackerUrl = "https://edge.kepixel.com";
         this.appId = appId;
+        this.encodedAppId = btoa(appId);
 
         if (userId) {
             this.userId = userId;
@@ -145,8 +137,48 @@ class KepixelTracker {
         this.userId = userId;
     }
 
+    /**
+     * Sends an identify call to the server.
+     *
+     * @param {Object} data - The identify payload.
+     * @returns {Promise} A Promise that resolves when the identify call is complete.
+     * @private
+     */
+    async identifyUser(data) {
+        if (!data) return;
+
+        const fetchObj = {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.encodedAppId}`,
+            },
+            body: JSON.stringify(data)
+        };
+
+        return fetch(`${this.trackerUrl}/v1/identify`, fetchObj)
+            .then((response) => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+
+                this.log && console.log('Kepixel identify call sent:', this.trackerUrl, fetchObj);
+
+                return response;
+            })
+            .catch((error) => {
+                this.log && console.log('Kepixel identify call failed:', this.trackerUrl, fetchObj);
+
+                console.warn('Kepixel identify error:', error);
+
+                return error;
+            });
+    }
+
     setAppId(appId) {
         this.appId = appId;
+        this.encodedAppId = btoa(appId);
     }
 
     /**
@@ -1564,9 +1596,6 @@ class KepixelTracker {
     async track(data) {
         if (!data) return;
 
-        // Wait for initialization to complete before proceeding
-        await this.initializationPromise;
-
         // take a possibly given language and delete it from the data object, as we need to pass it in
         // the headers instead of body params. otherwise it would overwrite the 'Accept-Language' value.
         const lang = data.lang;
@@ -1587,6 +1616,25 @@ class KepixelTracker {
                 this.setUserId(data.userInfo.id);
             }
         }
+
+        // Call identifyUser before processing data.e_n
+        // Generate a dynamic timestamp in ISO 8601 format (yyyy-MM-ddTHH:mm:ss.SSSZ)
+        const currentTimestamp = new Date().toISOString();
+
+        const identifyPayload = {
+            userId: this.userId || "identified user id",
+            anonymousId: "anon-id-new",
+            context: {
+                traits: data.userInfo ?? {},
+                library: {
+                    name: "http"
+                }
+            },
+            timestamp: currentTimestamp
+        };
+
+        // Call identifyUser and don't wait for the response to continue processing
+        this.identifyUser(identifyPayload);
 
         data.e_n = JSON.stringify(data.e_n);
 
