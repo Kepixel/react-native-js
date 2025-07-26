@@ -6,6 +6,11 @@ Install the Kepixel React Native JS library by running:
 npm install @kepixel/react-native-sdk
 ```
 
+If installing directly from the repository, build the library first:
+```bash
+npm run build
+```
+
 #### 2. **Android Configuration**
 For Android: Make sure you have added mavenCentral() as a repository in your project level build.gradle file, as shown below:
 ```gradle

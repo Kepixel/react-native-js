@@ -1,9 +1,12 @@
 import React, { createContext, ReactNode } from 'react';
+import KepixelTracker from './KepixelTracker.js';
 
-export const KepixelContext = createContext<any>({});
+export type KepixelContextValue = KepixelTracker;
+
+export const KepixelContext = createContext<KepixelContextValue | null>(null);
 
 export interface KepixelProviderProps {
-  instance: any;
+  instance: KepixelTracker;
   children: ReactNode;
 }
 
