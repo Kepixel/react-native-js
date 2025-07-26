@@ -1538,10 +1538,26 @@ class KepixelTracker {
                 'promotion_viewed': 'Promotion Viewed',
                 'promotion_clicked': 'Promotion Clicked',
                 'product_reviewed': 'Product Reviewed',
-                'page_loaded': 'Page Loaded'
+                'page_loaded': 'Page Loaded',
+                'add_to_cart': 'Product Added',
+                'search': 'Products Searched',
+                'list_view': 'Product List Viewed',
+                'view_content': 'Product Viewed',
+                'initiate_checkout': 'Checkout Started',
+                'add_to_wishlist': 'Product Added to Wishlist',
+                'purchase': 'Order Completed',
+                'add_payment_info': 'Payment Info Entered',
+                'sign_up': 'Sign Up',
+                'complete_registration': 'Sign Up',
+                'login': 'Login',
+                'app_install': 'App Install',
+                'download': 'Download',
+                'app_open': 'App Open',
+                'contact': 'Contact',
+                'page_view': 'Page Viewed',
             };
             // Get the event name from the map or use the category as fallback
-            const eventName = (_a = eventCategoryMap[data.e_c]) !== null && _a !== void 0 ? _a : null;
+            const eventName = (_a = eventCategoryMap[data.e_c]) !== null && _a !== void 0 ? _a : data.e_c;
             if (!eventName) {
                 console.warn('KepixelTracker: Invalid event category:', data.e_c);
                 return;
