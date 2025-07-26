@@ -18,7 +18,8 @@
   "author": "Mohamed <myasser@kepixel.com>",
   "bugs": {},
   "dependencies": {
-    "@rudderstack/rudder-sdk-react-native": "^3.0.0"
+    "react": "*",
+    "react-native": "*"
   },
   "devDependencies": {
     "typescript": "^5.8.3"
