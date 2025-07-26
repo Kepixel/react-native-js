@@ -11,7 +11,9 @@
     "react native",
     "expo"
   ],
-  "author": "Osama <osama@kepixel.com>",
-  "bugs": {
+  "author": "Mohamed <myasser@kepixel.com>",
+  "bugs": {},
+  "dependencies": {
+    "@rudderstack/rudder-sdk-react-native": "^3.0.0"
   }
 }
