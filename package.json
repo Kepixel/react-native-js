@@ -8,8 +8,7 @@
   "types": "index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "prepublishOnly": "npm run build"
+    "build": "tsc"
   },
   "keywords": [
     "Kepixel",
@@ -20,5 +19,8 @@
   "bugs": {},
   "dependencies": {
     "@rudderstack/rudder-sdk-react-native": "^3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
   }
 }

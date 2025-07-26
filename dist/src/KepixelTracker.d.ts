@@ -1,0 +1,696 @@
+interface TrackerOptions {
+    appId: string;
+    userId?: string;
+    log?: boolean;
+}
+declare class KepixelTracker {
+    trackerUrl: string;
+    appId: string;
+    userId?: string;
+    log: boolean;
+    initializationPromise: Promise<void>;
+    constructor(userOptions: TrackerOptions);
+    /**
+     * Returns a promise that resolves when initialization is complete.
+     *
+     * @returns {Promise} A promise that resolves when initialization is complete.
+     */
+    getInitializationPromise(): Promise<void>;
+    /**
+     * Validates user_data object to ensure it has at least one required property.
+     *
+     * @param {Object} user_data - The user data object to validate.
+     * @returns {boolean} True if the user_data is valid, false otherwise.
+     * @private
+     */
+    _validateUserData(user_data: any): boolean;
+    /**
+     * Validates an item object to ensure it has all required properties.
+     *
+     * @param {Object} item - The item object to validate.
+     * @returns {boolean} True if the item is valid, false otherwise.
+     * @private
+     */
+    _validateItem(item: any): boolean;
+    /**
+     * Validates an array of items to ensure each item has all required properties.
+     *
+     * @param {Array} items - The array of items to validate.
+     * @returns {boolean} True if all items are valid, false otherwise.
+     * @private
+     */
+    _validateItems(items: any): boolean;
+    /**
+     * Initializes the KepixelTracker with user options.
+     *
+     * @param {Object} options - Initialization options.
+     * @param {string} options.appId - The Kepixel app ID.
+     * @param {string} [options.userId] - The user ID for tracking.
+     * @param {boolean} [options.log=false] - Indicates if logging is enabled.
+     */
+    initialize({ appId, userId, log }: {
+        appId: any;
+        userId: any;
+        log?: boolean;
+    }): Promise<void>;
+    setUserId(userId: any): void;
+    setAppId(appId: any): void;
+    /**
+     * Tracks app start as an action with a prefixed 'App' category.
+     *
+     * @param {Object} [options={}] - Tracking options.
+     * @param {Object} [options.user_data={}] - Optional data for tracking different user info.
+     * @returns {Promise} A Promise that resolves when the tracking is complete.
+     *
+     */
+    trackAppStart({ user_data }?: {
+        user_data?: {};
+    }): Promise<any>;
+    /**
+     * Tracks a screen view as an action with the prefixed 'Screen' category.
+     *
+     * This method is used to record user interactions with screens or pages in your application.
+     *
+     * @param {Object} options - Options for tracking the screen view.
+     * @param {string} options.name - The title of the screen being tracked. Use slashes (/) to set one or
+     several categories for this screen. For example, 'Help / Feedback' will create the Action 'Feedback' in the
+     category 'Help'.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @throws {Error} Throws an error if the 'name' parameter is not provided.
+     * @returns {Promise} A Promise that resolves when the screen view tracking is complete.
+     *
+     * @example
+     * // Tracking a screen view without user information
+     * trackScreenView({name: 'Home'});
+     *
+     * @example
+     * // Tracking a screen view with additional user information
+     * trackScreenView({name: 'Product Details', user_data: {uid: '123456'}});
+     */
+    trackScreenView({ name, user_data }: {
+        name: any;
+        user_data?: {};
+    }): Promise<any>;
+    /**
+     * Tracks a custom action.
+     *
+     * This method is used to record user interactions with specific actions in your application.
+     *
+     * @param {Object} options - Options for tracking the action.
+     * @param {string} options.name - The title of the action being tracked. Use slashes (/) to set one or
+     several categories for this action. For example, 'Help / Feedback' will create the Action 'Feedback' in the
+     category 'Help'.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @throws {Error} Throws an error if the 'name' parameter is not provided.
+     * @returns {Promise} A Promise that resolves when the action tracking is complete.
+     *
+     * @example
+     * // Tracking a custom action without user information
+     * trackAction({name: 'ButtonClick'});
+     *
+     * @example
+     * // Tracking a custom action with additional user information
+     * trackAction({name: 'AddToCart', user_data: {uid: '123456'}});
+     *
+     */
+    trackAction({ name, user_data }: {
+        name: any;
+        user_data?: {};
+    }): Promise<any>;
+    /**
+     * Tracks a custom event.
+     *
+     * This method is used to record specific events in your application, providing insights into user
+     interactions.
+     *
+     * @param {Object} options - Options for tracking the event.
+     * @param {string} options.category - The event category. Must not be empty. (e.g., Videos, Music, Games...)
+     * @param {string} options.action - The event action. Must not be empty. (e.g., Play, Pause, Duration, Add
+     Playlist, Downloaded, Clicked...)
+     * @param {string} [options.name] - The event name. (e.g., a Movie name, or Song name, or File name...)
+     * @param {number | float} [options.value] - The event value. Must be a float or integer value (numeric), not
+     a string.
+     * @param {string} [options.campaign] - The event related campaign.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @throws {Error} Throws an error if the 'category' or 'action' parameters are not provided.
+     * @returns {Promise} A Promise that resolves when the event tracking is complete.
+     *
+     * @example
+     * // Tracking a basic event without additional information
+     * trackEvent({category: 'Videos', action: 'Play'});
+     *
+     * @example
+     * // Tracking an event with a name and user information
+     * trackEvent({category: 'Music', action: 'Pause', name: 'FavoriteSong', user_data: {uid: '123456'}});
+     *
+     */
+    trackEvent({ category, action, name, value, campaign, user_data, source, custom_data }: {
+        category: any;
+        action: any;
+        name: any;
+        value: any;
+        campaign: any;
+        user_data?: {};
+        source: any;
+        custom_data: any;
+    }): Promise<any>;
+    /**
+     * Tracks clicks on outgoing links.
+     *
+     * This method is used to record user interactions when clicking on external links, providing insights into
+     user navigation patterns.
+     *
+     * @param {Object} options - Options for tracking the link click.
+     * @param {string} options.link - An external URL the user has opened. Used for tracking outlink clicks.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @throws {Error} Throws an error if the 'link' parameter is not provided.
+     * @returns {Promise} A Promise that resolves when the link click tracking is complete.
+     *
+     * @example
+     * // Tracking a link click without additional information
+     * trackLink({link: 'https://external-site.com'});
+     *
+     * @example
+     * // Tracking a link click with user information
+     * trackLink({link: 'https://external-site.com', user_data: {userId: '123456', userRole: 'visitor'}});
+     *
+     */
+    trackLink({ link, user_data }: {
+        link: any;
+        user_data?: {};
+    }): Promise<any>;
+    /**
+     * Tracks file downloads.
+     *
+     * This method is used to record user interactions when downloading files, providing insights into user
+     engagement with downloadable content.
+     *
+     * @param {Object} [options={}] - Options for tracking the download.
+     * @param {string} options.download - URL of a file the user has downloaded. Used for tracking downloads.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @throws {Error} Throws an error if the 'download' parameter is not provided.
+     * @returns {Promise} A Promise that resolves when the download tracking is complete.
+     *
+     * @example
+     * // Tracking a file download without additional information
+     * trackDownload({download: 'https://example.com/files/document.pdf'});
+     *
+     * @example
+     * // Tracking a file download with user information
+     * trackDownload({download: 'https://example.com/files/image.png', user_data: {uid: '123456'}});
+     */
+    trackDownload(options?: {}): Promise<any>;
+    /**
+     * Tracks a purchase event.
+     *
+     * This method is used to record user purchase events in your application.
+     *
+     * @param {Object} [options={}] - Options for tracking the purchase.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the purchase tracking is complete.
+     *
+     * @example
+     * // Tracking a purchase
+     * trackPurchase({user_data: {value: 100, currency: 'USD', order_id: 'order123'}});
+     */
+    trackPurchase(options?: {}): Promise<any>;
+    /**
+     * Tracks an add to cart event.
+     *
+     * This method is used to record when users add items to their cart.
+     *
+     * @param {Object} [options={}] - Options for tracking the add to cart event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the add to cart tracking is complete.
+     *
+     * @example
+     * // Tracking an add to cart event
+     * trackAddToCart({user_data: {value: 50, currency: 'USD', content_ids: ['prod123']}});
+     */
+    trackAddToCart(options?: {}): Promise<any>;
+    /**
+     * Tracks a lead event.
+     *
+     * This method is used to record when users express interest in your product or service.
+     *
+     * @param {Object} [options={}] - Options for tracking the lead event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the lead tracking is complete.
+     *
+     * @example
+     * // Tracking a lead event
+     }
+
+     /**
+     * Tracks a view content event.
+     *
+     * This method is used to record when users view specific content.
+     *
+     * @param {Object} [options={}] - Options for tracking the view content event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the view content tracking is complete.
+     *
+     * @example
+     * // Tracking a view content event
+     * trackViewContent({user_data: {content_ids: ['prod123'], content_type: 'product'}});
+     */
+    trackViewContent(options?: {}): Promise<any>;
+    /**
+     * Tracks a complete registration event.
+     *
+     * This method is used to record when users complete a registration process.
+     *
+     * @param {Object} [options={}] - Options for tracking the complete registration event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the complete registration tracking is complete.
+     *
+     * @example
+     * // Tracking a complete registration event
+     * trackCompleteRegistration({user_data: {content_name: 'Account Creation'}});
+     */
+    trackCompleteRegistration(options?: {}): Promise<any>;
+    /**
+     * Tracks a search event.
+     *
+     * This method is used to record when users perform a search.
+     *
+     * @param {Object} [options={}] - Options for tracking the search event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the search tracking is complete.
+     *
+     * @example
+     * // Tracking a search event
+     * trackSearch({user_data: {search_string: 'shoes'}});
+     */
+    trackSearch(options?: {}): Promise<any>;
+    /**
+     * Tracks an initiate checkout event.
+     *
+     * This method is used to record when users begin the checkout process.
+     *
+     * @param {Object} [options={}] - Options for tracking the initiate checkout event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the initiate checkout tracking is complete.
+     *
+     * @example
+     * // Tracking an initiate checkout event
+     * trackInitiateCheckout({user_data: {value: 100, currency: 'USD', content_ids: ['prod123']}});
+     */
+    trackInitiateCheckout(options?: {}): Promise<any>;
+    /**
+     * Tracks an add payment info event.
+     *
+     * This method is used to record when users add payment information.
+     *
+     * @param {Object} [options={}] - Options for tracking the add payment info event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the add payment info tracking is complete.
+     *
+     * @example
+     * // Tracking an add payment info event
+     * trackAddPaymentInfo({user_data: {value: 100, currency: 'USD'}});
+     */
+    trackAddPaymentInfo(options?: {}): Promise<any>;
+    /**
+     * Tracks a sign up event.
+     *
+     * This method is used to record when users sign up for a service.
+     *
+     * @param {Object} [options={}] - Options for tracking the sign up event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the sign up tracking is complete.
+     *
+     * @example
+     * // Tracking a sign up event
+     * trackSignUp({user_data: {content_name: 'Newsletter Signup'}});
+     */
+    trackSignUp(options?: {}): Promise<any>;
+    /**
+     * Tracks a page view event.
+     *
+     * This method is used to record when users view a page.
+     *
+     * @param {Object} [options={}] - Options for tracking the page view event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the page view tracking is complete.
+     *
+     * @example
+     * // Tracking a page view event
+     * trackPageView({user_data: {page_url: 'https://example.com/home'}});
+     */
+    trackPageView(options?: {}): Promise<any>;
+    /**
+     * Tracks a list view event.
+     *
+     * This method is used to record when users view a list of items.
+     *
+     * @param {Object} [options={}] - Options for tracking the list view event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the list view tracking is complete.
+     *
+     * @example
+     * // Tracking a list view event
+     * trackListView({user_data: {content_ids: ['prod123', 'prod456']}});
+     */
+    trackListView(options?: {}): Promise<any>;
+    /**
+     * Tracks an add to wishlist event.
+     *
+     * This method is used to record when users add items to their wishlist.
+     *
+     * @param {Object} [options={}] - Options for tracking the add to wishlist event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the add to wishlist tracking is complete.
+     *
+     * @example
+     * // Tracking an add to wishlist event
+     * trackAddToWishlist({user_data: {content_ids: ['prod123']}});
+     */
+    trackAddToWishlist(options?: {}): Promise<any>;
+    /**
+     * Tracks an app open event.
+     *
+     * This method is used to record when users open the app.
+     *
+     * @param {Object} [options={}] - Options for tracking the app open event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the app open tracking is complete.
+     *
+     * @example
+     * // Tracking an app open event
+     * trackAppOpen({user_data: {app_version: '1.0.0'}});
+     */
+    trackAppOpen(options?: {}): Promise<any>;
+    /**
+     * Tracks an app install event.
+     *
+     * This method is used to record when users install the app.
+     *
+     * @param {Object} [options={}] - Options for tracking the app install event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the app install tracking is complete.
+     *
+     * @example
+     * // Tracking an app install event
+     * trackAppInstall({user_data: {device_model: 'iPhone 13'}});
+     */
+    trackAppInstall(options?: {}): Promise<any>;
+    /**
+     * Tracks a contact event.
+     *
+     * This method is used to record when users make contact.
+     *
+     * @param {Object} [options={}] - Options for tracking the contact event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the contact tracking is complete.
+     *
+     * @example
+     * // Tracking a contact event
+     * trackContact({user_data: {contact_method: 'email'}});
+     */
+    trackContact(options?: {}): Promise<any>;
+    /**
+     * Tracks a schedule event.
+     *
+     * This method is used to record when users schedule something.
+     *
+     * Tracks a start trial event.
+     *
+     * This method is used to record when users start a trial.
+     *
+     * @param {Object} [options={}] - Options for tracking the start trial event.
+
+     /**
+     * Tracks a submit application event.
+     *
+     * This method is used to record when users submit an application.
+     *
+     * @param {Object} [options={}] - Options for tracking the submit application event.
+
+     /**
+     * Tracks a send conversion event.
+     *
+     * This method is used to record conversion events.
+     *
+     * @param {Object} [options={}] - Options for tracking the send conversion event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     /**
+     * Tracks a conversion adjustment event.
+     *
+     * This method is used to record conversion adjustment events.
+     *
+     * @param {Object} [options={}] - Options for tracking the conversion adjustment event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     /**
+     * Tracks a login event.
+     *
+     * This method is used to record when users log in.
+     *
+     * @param {Object} [options={}] - Options for tracking the login event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the login tracking is complete.
+     *
+     * @example
+     * // Tracking a login event
+     * trackLogin({user_data: {method: 'email'}});
+     */
+    trackLogin(options?: {}): Promise<any>;
+    /**
+     * Tracks a tutorial begin event.
+     *
+     * This method is used to record when users begin a tutorial.
+     *
+     * @param {Object} [options={}] - Options for tracking the tutorial begin event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     /**
+     * Tracks a join group event.
+     *
+     * This method is used to record when users join a group.
+     *
+     * @param {Object} [options={}] - Options for tracking the join group event.
+
+     /**
+     * Tracks a qualified lead event.
+     *
+     * This method is used to record qualified lead events.
+     *
+     * @param {Object} [options={}] - Options for tracking the qualified lead event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     /**
+     * Tracks a custom event.
+     *
+     * This method is used to record custom events.
+     *
+     * @param {Object} [options={}] - Options for tracking the custom event.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @returns {Promise} A Promise that resolves when the custom event tracking is complete.
+     *
+     * @example
+     * // Tracking a custom event
+     * trackCustomEvent({user_data: {custom_param: 'value'}});
+     */
+    trackCustomEvent(options?: {}): Promise<any>;
+    /**
+     * Tracks a goal conversion.
+     *
+     * This method is used to manually trigger a goal conversion.
+     *
+     * @param {Object} options - Options for tracking the goal conversion.
+     * @param {number} options.goalId - The ID of the goal to track.
+     * @param {number} [options.revenue] - Optional revenue associated with the goal conversion.
+     * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
+     * @param {Object} [options.custom_data={}] - Optional custom data for the goal conversion.
+     * @returns {Promise} A Promise that resolves when the goal tracking is complete.
+     *
+     * @example
+     * // Tracking a goal conversion without revenue
+     * trackGoal({goalId: 1});
+     *
+     * @example
+     * // Tracking a goal conversion with revenue
+     * trackGoal({goalId: 1, revenue: 10.50});
+     */
+    trackGoal({ goalId, revenue, user_data, custom_data }: {
+        goalId: any;
+        revenue: any;
+        user_data?: {};
+        custom_data?: {};
+    }): Promise<any>;
+    /**
+     * Sets the current page view as a product or category page view.
+     * Must be called before trackPageView.
+     *
+     * @param {string | boolean} productSKU - Product SKU or false for category view.
+     * @param {string | boolean} productName - Product name or false for category view.
+     * @param {string | Array} categoryName - Product category or array of up to 5 categories.
+     * @param {number} [price] - Product price.
+     * @returns {void}
+     *
+     * @example
+     * // Track a product view
+     * setEcommerceView("SKU123", "Awesome Product", ["Category1", "Category2"], 29.99);
+     * _paq.push(['trackPageView']);
+     *
+     * @example
+     * // Track a category view
+     * setEcommerceView(false, false, "Electronics");
+     * _paq.push(['trackPageView']);
+     */
+    setEcommerceView(productSKU: any, productName: any, categoryName: any, price: any): void;
+    /**
+     * Adds an item to the internal ecommerce cart for tracking.
+     * Must be called before trackEcommerceCartUpdate or trackEcommerceOrder.
+     *
+     * @param {string} productSKU - Product SKU.
+     * @param {string} [productName] - Product name.
+     * @param {string | Array} [categoryName] - Product category or array of up to 5 categories.
+     * @param {number} [price] - Product price.
+     * @param {number} [quantity=1] - Product quantity.
+     * @returns {void}
+     *
+     * @example
+     * // Add an item to the cart
+     * addEcommerceItem("SKU123", "Awesome Product", ["Category1", "Category2"], 29.99, 2);
+     */
+    addEcommerceItem(productSKU: any, productName: any, categoryName: any, price: any, quantity?: number): void;
+    /**
+     * Removes all items from the internal ecommerce cart.
+     *
+     * @returns {void}
+     *
+     * @example
+     * // Clear the cart
+     * clearEcommerceCart();
+     */
+    clearEcommerceCart(): void;
+    /**
+     * Tracks a shopping cart update.
+     * Call this after adding items with addEcommerceItem.
+     *
+     * @param {number} grandTotal - The grand total of the cart.
+     * @returns {Promise} A Promise that resolves when the cart update tracking is complete.
+     *
+     * @example
+     * // Track a cart update
+     * trackEcommerceCartUpdate(69.97);
+     */
+    trackEcommerceCartUpdate(grandTotal: any): Promise<any>;
+    /**
+     * Tracks an e-commerce order.
+     * Call this after adding items with addEcommerceItem.
+     *
+     * @param {string} orderId - Order ID.
+     * @param {number} grandTotal - Grand total.
+     * @param {number} [subTotal] - Subtotal.
+     * @param {number} [tax] - Tax.
+     * @param {number} [shipping] - Shipping.
+     * @param {number} [discount] - Discount.
+     * @returns {Promise} A Promise that resolves when the order tracking is complete.
+     *
+     * @example
+     * // Track an order
+     * trackEcommerceOrder("ORDER123", 69.97, 59.98, 5.00, 4.99, 0);
+     */
+    trackEcommerceOrder(orderId: any, grandTotal: any, subTotal: any, tax: any, shipping: any, discount: any): Promise<any>;
+    /**
+     * Enables the heart beat timer to accurately measure the time spent on the page.
+     *
+     * @param {number} [activeTime=15] - Minimum active time in seconds before sending heart beat.
+     * @returns {void}
+     *
+     * @example
+     * // Enable heart beat timer with default settings
+     * enableHeartBeatTimer();
+     *
+     * @example
+     * // Enable heart beat timer with custom active time
+     * enableHeartBeatTimer(30);
+     */
+    enableHeartBeatTimer(activeTime?: number): void;
+    /**
+     * Disables the heart beat timer.
+     *
+     * @returns {void}
+     *
+     * @example
+     * // Disable heart beat timer
+     * disableHeartBeatTimer();
+     */
+    disableHeartBeatTimer(): void;
+    /**
+     * Starts the heart beat timer.
+     *
+     * @private
+     */
+    _startHeartBeatTimer(): void;
+    /**
+     * Checks if a heart beat should be sent.
+     *
+     * @private
+     */
+    _checkHeartBeat(): void;
+    /**
+     * Handles visibility change events.
+     *
+     * @private
+     */
+    _handleVisibilityChange(): void;
+    /**
+     * Updates the last active time.
+     *
+     * @private
+     */
+    _updateLastActive(): void;
+    /**
+     * Enables automatic link tracking.
+     *
+     * @param {boolean} [trackContent=false] - Whether to track content within links.
+     * @returns {void}
+     *
+     * @example
+     * // Enable link tracking
+     * enableLinkTracking();
+     */
+    enableLinkTracking(trackContent?: boolean): void;
+    /**
+     * Disables automatic link tracking.
+     *
+     * @returns {void}
+     *
+     * @example
+     * // Disable link tracking
+     * disableLinkTracking();
+     */
+    disableLinkTracking(): void;
+    /**
+     * Handles link click events.
+     *
+     * @private
+     * @param {Event} event - The click event.
+     */
+    _handleLinkClick(event: any): void;
+    /**
+     * Checks if a URL is an external link.
+     *
+     * @private
+     * @param {string} url - The URL to check.
+     * @returns {boolean} True if the URL is an external link, false otherwise.
+     */
+    _isExternalLink(url: any): boolean;
+    /**
+     * Checks if a URL is a download link.
+     *
+     * @private
+     * @param {string} url - The URL to check.
+     * @returns {boolean} True if the URL is a download link, false otherwise.
+     */
+    _isDownloadLink(url: any): boolean;
+    /**
+     * Sends the tracking data to Kepixel.
+     *
+     * @param {Object} data - The tracking data.
+     * @returns {Promise} A Promise that resolves when the tracking data is sent.
+     */
+    track(data: any): Promise<any>;
+}
+export default KepixelTracker;
