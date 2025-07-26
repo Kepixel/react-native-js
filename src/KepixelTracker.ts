@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Represents a Kepixel Tracker for tracking user interactions.
  *
@@ -28,8 +29,20 @@ import {
 } from '../DTO/index.js';
 import rudderClient, {RUDDER_LOG_LEVEL} from '@rudderstack/rudder-sdk-react-native';
 
+interface TrackerOptions {
+    appId: string;
+    userId?: string;
+    log?: boolean;
+}
+
 class KepixelTracker {
-    constructor(userOptions) {
+    trackerUrl!: string;
+    appId!: string;
+    userId?: string;
+    log: boolean = false;
+    initializationPromise!: Promise<void>;
+
+    constructor(userOptions: TrackerOptions) {
         if (!userOptions.appId) {
             throw new Error('appId is required for Kepixel tracking.');
         }

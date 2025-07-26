@@ -25,7 +25,7 @@ This document provides examples for tracking different event types using the Kep
 The ViewContent event is used to track when users view specific content.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackViewContent } = useKepixel();
 
@@ -52,7 +52,7 @@ trackViewContent({
 The AddToCart event is used to track when users add items to their cart.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackAddToCart } = useKepixel();
 
@@ -81,7 +81,7 @@ trackAddToCart({
 The Purchase event is used to track when users complete a purchase.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackPurchase } = useKepixel();
 
@@ -120,7 +120,7 @@ trackPurchase({
 The Download event is used to track when users download files.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackDownload } = useKepixel();
 
@@ -142,7 +142,7 @@ trackDownload({
 The AddPaymentInfo event is used to track when users add payment information.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackAddPaymentInfo } = useKepixel();
 
@@ -178,7 +178,7 @@ trackAddPaymentInfo({
 The AddToWishlist event is used to track when users add items to their wishlist.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackAddToWishlist } = useKepixel();
 
@@ -205,7 +205,7 @@ trackAddToWishlist({
 The AppInstall event is used to track when users install the app.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackAppInstall } = useKepixel();
 
@@ -226,7 +226,7 @@ trackAppInstall({
 The AppOpen event is used to track when users open the app.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackAppOpen } = useKepixel();
 
@@ -247,7 +247,7 @@ trackAppOpen({
 The CompleteRegistration event is used to track when users complete a registration process.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackCompleteRegistration } = useKepixel();
 
@@ -268,7 +268,7 @@ trackCompleteRegistration({
 The Contact event is used to track when users make contact.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackContact } = useKepixel();
 
@@ -289,7 +289,7 @@ trackContact({
 The CustomEvent event is used to track custom events.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackCustomEvent } = useKepixel();
 
@@ -310,7 +310,7 @@ trackCustomEvent({
 The InitiateCheckout event is used to track when users begin the checkout process.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackInitiateCheckout } = useKepixel();
 
@@ -346,7 +346,7 @@ trackInitiateCheckout({
 The ListView event is used to track when users view a list of items.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackListView } = useKepixel();
 
@@ -371,7 +371,7 @@ trackListView({
 The Login event is used to track when users log in.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackLogin } = useKepixel();
 
@@ -392,7 +392,7 @@ trackLogin({
 The PageView event is used to track when users view a page.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackPageView } = useKepixel();
 
@@ -416,7 +416,7 @@ trackPageView({
 The Search event is used to track when users perform a search.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackSearch } = useKepixel();
 
@@ -437,7 +437,7 @@ trackSearch({
 The SignUp event is used to track when users sign up for a service.
 
 ```javascript
-import { useKepixel } from 'kepixel-jstracker-react-native';
+import { useKepixel } from '@kepixel/react-native-sdk';
 
 const { trackSignUp } = useKepixel();
 

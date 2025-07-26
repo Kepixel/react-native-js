@@ -2,6 +2,7 @@
 auth.json
 npm-debug.log
 yarn-error.log
+dist/
 /.fleet
 /.idea
 /.vscode

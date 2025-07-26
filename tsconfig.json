@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2019",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "declaration": true,
+    "outDir": "dist",
+    "rootDir": ".",
+    "strict": false,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx"
+  },
+  "include": ["src/**/*.{ts,tsx}", "DTO/**/*.ts", "index.ts"],
+  "exclude": ["node_modules", "dist"]
+}

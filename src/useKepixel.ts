@@ -1,9 +1,9 @@
-import {useContext, useMemo} from 'react';
+import { useContext, useMemo } from 'react';
 
-import {KepixelContext} from './KepixelProvider';
+import { KepixelContext } from './KepixelProvider.js';
 
 const useKepixel = () => {
-    const instance = useContext(KepixelContext);
+    const instance = useContext<any>(KepixelContext);
 
     return useMemo(
         () => ({
