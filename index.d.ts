@@ -351,11 +351,9 @@ export default class KepixelTracker {
 }
 
 // React Context
-export interface KepixelContextValue {
-  [key: string]: any;
-}
+export type KepixelContextValue = KepixelTracker;
 
-export const KepixelContext: React.Context<KepixelContextValue>;
+export const KepixelContext: React.Context<KepixelContextValue | null>;
 
 // React Provider
 export interface KepixelProviderProps {
@@ -366,56 +364,6 @@ export interface KepixelProviderProps {
 export function KepixelProvider(props: KepixelProviderProps): JSX.Element;
 
 // React Hook
-export interface UseKepixelReturn {
-  // Basic tracking methods
-  trackAppStart: (params?: any) => void;
-  trackScreenView: (params?: any) => void;
-  trackAction: (params?: any) => void;
-  trackEvent: (params?: any) => void;
-  trackLink: (params?: any) => void;
-  trackDownload: (params?: DownloadEventParams) => void;
-
-  // E-commerce tracking methods
-  trackPurchase: (params?: PurchaseEventParams) => void;
-  trackAddToCart: (params?: AddToCartEventParams) => void;
-  trackViewContent: (params?: ViewContentEventParams) => void;
-  trackCompleteRegistration: (params?: CompleteRegistrationEventParams) => void;
-  trackSearch: (params?: SearchEventParams) => void;
-  trackInitiateCheckout: (params?: InitiateCheckoutEventParams) => void;
-  trackAddPaymentInfo: (params?: AddPaymentInfoEventParams) => void;
-  trackSignUp: (params?: SignUpEventParams) => void;
-  trackPageView: (params?: PageViewEventParams) => void;
-  trackListView: (params?: ListViewEventParams) => void;
-  trackAddToWishlist: (params?: AddToWishlistEventParams) => void;
-  trackAppOpen: (params?: AppOpenEventParams) => void;
-  trackAppInstall: (params?: AppInstallEventParams) => void;
-  trackContact: (params?: ContactEventParams) => void;
-  trackLogin: (params?: LoginEventParams) => void;
-  trackCustomEvent: (params?: CustomEventEventParams) => void;
-
-  // Goal tracking
-  trackGoal: (params?: any) => void;
-
-  // Advanced e-commerce tracking
-  setEcommerceView: (productSKU?: string, productName?: string, categoryName?: string, price?: number) => void;
-  addEcommerceItem: (productSKU?: string, productName?: string, categoryName?: string, price?: number, quantity?: number) => void;
-  clearEcommerceCart: () => void;
-  trackEcommerceCartUpdate: (grandTotal?: number) => void;
-  trackEcommerceOrder: (orderId?: string, grandTotal?: number, subTotal?: number, tax?: number, shipping?: number, discount?: number) => void;
-
-  // Heart beat timer
-  enableHeartBeatTimer: (activeTime?: number) => void;
-  disableHeartBeatTimer: () => void;
-
-  // Link tracking
-  enableLinkTracking: (trackContent?: boolean) => void;
-  disableLinkTracking: () => void;
-
-  // Configuration methods
-  setUserId: (userId: string) => void;
-  setAppId: (appId: string) => void;
-  putDeviceToken: (androidToken?: string, iOSToken?: string) => void;
-  setAdvertisingId: (androidId?: string, iOSId?: string) => void;
-}
+export type UseKepixelReturn = KepixelContextValue;
 
 export function useKepixel(): UseKepixelReturn;
