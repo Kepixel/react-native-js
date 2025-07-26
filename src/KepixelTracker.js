@@ -26,6 +26,7 @@ import {
     SignUpEvent,
     ViewContentEvent,
 } from '../DTO/index.js';
+import rudderClient, {RUDDER_LOG_LEVEL} from '@rudderstack/rudder-sdk-react-native';
 
 class KepixelTracker {
     constructor(userOptions) {
@@ -33,7 +34,16 @@ class KepixelTracker {
             throw new Error('appId is required for Kepixel tracking.');
         }
 
-        this.initialize(userOptions);
+        this.initializationPromise = this.initialize(userOptions);
+    }
+
+    /**
+     * Returns a promise that resolves when initialization is complete.
+     *
+     * @returns {Promise} A promise that resolves when initialization is complete.
+     */
+    getInitializationPromise() {
+        return this.initializationPromise;
     }
 
     /**
@@ -101,7 +111,7 @@ class KepixelTracker {
      * @param {string} [options.userId] - The user ID for tracking.
      * @param {boolean} [options.log=false] - Indicates if logging is enabled.
      */
-    initialize({appId, userId, log = false}) {
+    async initialize({appId, userId, log = false}) {
         this.log = log;
 
         this.trackerUrl = "https://edge.kepixel.com";
@@ -110,6 +120,13 @@ class KepixelTracker {
         if (userId) {
             this.userId = userId;
         }
+
+        await rudderClient.setup(appId, {
+            dataPlaneUrl: this.trackerUrl,
+            trackAppLifecycleEvents: true,
+            logLevel: RUDDER_LOG_LEVEL.DEBUG
+        });
+
 
         log &&
         console.log('Kepixel tracking is enabled for:', {
@@ -145,18 +162,20 @@ class KepixelTracker {
      * This method is used to record user interactions with screens or pages in your application.
      *
      * @param {Object} options - Options for tracking the screen view.
-     * @param {string} options.name - The title of the screen being tracked. Use slashes (/) to set one or several categories for this screen. For example, 'Help / Feedback' will create the Action 'Feedback' in the category 'Help'.
+     * @param {string} options.name - The title of the screen being tracked. Use slashes (/) to set one or
+     several categories for this screen. For example, 'Help / Feedback' will create the Action 'Feedback' in the
+     category 'Help'.
      * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
      * @throws {Error} Throws an error if the 'name' parameter is not provided.
      * @returns {Promise} A Promise that resolves when the screen view tracking is complete.
      *
      * @example
      * // Tracking a screen view without user information
-     * trackScreenView({ name: 'Home' });
+     * trackScreenView({name: 'Home'});
      *
      * @example
      * // Tracking a screen view with additional user information
-     * trackScreenView({ name: 'Product Details', user_data: { uid: '123456' } });
+     * trackScreenView({name: 'Product Details', user_data: {uid: '123456'}});
      */
     trackScreenView({name, user_data = {}}) {
         if (!name) {
@@ -173,18 +192,20 @@ class KepixelTracker {
      * This method is used to record user interactions with specific actions in your application.
      *
      * @param {Object} options - Options for tracking the action.
-     * @param {string} options.name - The title of the action being tracked. Use slashes (/) to set one or several categories for this action. For example, 'Help / Feedback' will create the Action 'Feedback' in the category 'Help'.
+     * @param {string} options.name - The title of the action being tracked. Use slashes (/) to set one or
+     several categories for this action. For example, 'Help / Feedback' will create the Action 'Feedback' in the
+     category 'Help'.
      * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
      * @throws {Error} Throws an error if the 'name' parameter is not provided.
      * @returns {Promise} A Promise that resolves when the action tracking is complete.
      *
      * @example
      * // Tracking a custom action without user information
-     * trackAction({ name: 'ButtonClick' });
+     * trackAction({name: 'ButtonClick'});
      *
      * @example
      * // Tracking a custom action with additional user information
-     * trackAction({ name: 'AddToCart', user_data: { uid: '123456'} });
+     * trackAction({name: 'AddToCart', user_data: {uid: '123456'}});
      *
      */
     trackAction({name, user_data = {}}) {
@@ -198,13 +219,16 @@ class KepixelTracker {
     /**
      * Tracks a custom event.
      *
-     * This method is used to record specific events in your application, providing insights into user interactions.
+     * This method is used to record specific events in your application, providing insights into user
+     interactions.
      *
      * @param {Object} options - Options for tracking the event.
      * @param {string} options.category - The event category. Must not be empty. (e.g., Videos, Music, Games...)
-     * @param {string} options.action - The event action. Must not be empty. (e.g., Play, Pause, Duration, Add Playlist, Downloaded, Clicked...)
+     * @param {string} options.action - The event action. Must not be empty. (e.g., Play, Pause, Duration, Add
+     Playlist, Downloaded, Clicked...)
      * @param {string} [options.name] - The event name. (e.g., a Movie name, or Song name, or File name...)
-     * @param {number|float} [options.value] - The event value. Must be a float or integer value (numeric), not a string.
+     * @param {number | float} [options.value] - The event value. Must be a float or integer value (numeric), not
+     a string.
      * @param {string} [options.campaign] - The event related campaign.
      * @param {Object} [options.user_data={}] - Optional data used for tracking different user information.
      * @throws {Error} Throws an error if the 'category' or 'action' parameters are not provided.
@@ -212,11 +236,11 @@ class KepixelTracker {
      *
      * @example
      * // Tracking a basic event without additional information
-     * trackEvent({ category: 'Videos', action: 'Play' });
+     * trackEvent({category: 'Videos', action: 'Play'});
      *
      * @example
      * // Tracking an event with a name and user information
-     * trackEvent({ category: 'Music', action: 'Pause', name: 'FavoriteSong', user_data: { uid: '123456'} });
+     * trackEvent({category: 'Music', action: 'Pause', name: 'FavoriteSong', user_data: {uid: '123456'}});
      *
      */
     trackEvent({category, action, name, value, campaign, user_data = {}, source, custom_data}) {
@@ -243,7 +267,8 @@ class KepixelTracker {
     /**
      * Tracks clicks on outgoing links.
      *
-     * This method is used to record user interactions when clicking on external links, providing insights into user navigation patterns.
+     * This method is used to record user interactions when clicking on external links, providing insights into
+     user navigation patterns.
      *
      * @param {Object} options - Options for tracking the link click.
      * @param {string} options.link - An external URL the user has opened. Used for tracking outlink clicks.
@@ -253,11 +278,11 @@ class KepixelTracker {
      *
      * @example
      * // Tracking a link click without additional information
-     * trackLink({ link: 'https://external-site.com' });
+     * trackLink({link: 'https://external-site.com'});
      *
      * @example
      * // Tracking a link click with user information
-     * trackLink({ link: 'https://external-site.com', user_data: { userId: '123456', userRole: 'visitor' } });
+     * trackLink({link: 'https://external-site.com', user_data: {userId: '123456', userRole: 'visitor'}});
      *
      */
     trackLink({link, user_data = {}}) {
@@ -275,7 +300,8 @@ class KepixelTracker {
     /**
      * Tracks file downloads.
      *
-     * This method is used to record user interactions when downloading files, providing insights into user engagement with downloadable content.
+     * This method is used to record user interactions when downloading files, providing insights into user
+     engagement with downloadable content.
      *
      * @param {Object} [options={}] - Options for tracking the download.
      * @param {string} options.download - URL of a file the user has downloaded. Used for tracking downloads.
@@ -285,11 +311,11 @@ class KepixelTracker {
      *
      * @example
      * // Tracking a file download without additional information
-     * trackDownload({ download: 'https://example.com/files/document.pdf' });
+     * trackDownload({download: 'https://example.com/files/document.pdf'});
      *
      * @example
      * // Tracking a file download with user information
-     * trackDownload({ download: 'https://example.com/files/image.png', user_data: { uid: '123456' } });
+     * trackDownload({download: 'https://example.com/files/image.png', user_data: {uid: '123456'}});
      */
     trackDownload(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -328,7 +354,7 @@ class KepixelTracker {
      *
      * @example
      * // Tracking a purchase
-     * trackPurchase({ user_data: { value: 100, currency: 'USD', order_id: 'order123' } });
+     * trackPurchase({user_data: {value: 100, currency: 'USD', order_id: 'order123'}});
      */
     trackPurchase(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -378,7 +404,7 @@ class KepixelTracker {
      *
      * @example
      * // Tracking an add to cart event
-     * trackAddToCart({ user_data: { value: 50, currency: 'USD', content_ids: ['prod123'] } });
+     * trackAddToCart({user_data: {value: 50, currency: 'USD', content_ids: ['prod123']}});
      */
     trackAddToCart(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -440,7 +466,7 @@ class KepixelTracker {
      *
      * @example
      * // Tracking a view content event
-     * trackViewContent({ user_data: { content_ids: ['prod123'], content_type: 'product' } });
+     * trackViewContent({user_data: {content_ids: ['prod123'], content_type: 'product'}});
      */
     trackViewContent(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -484,7 +510,7 @@ class KepixelTracker {
      *
      * @example
      * // Tracking a complete registration event
-     * trackCompleteRegistration({ user_data: { content_name: 'Account Creation' } });
+     * trackCompleteRegistration({user_data: {content_name: 'Account Creation'}});
      */
     trackCompleteRegistration(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -523,7 +549,7 @@ class KepixelTracker {
      *
      * @example
      * // Tracking a search event
-     * trackSearch({ user_data: { search_string: 'shoes' } });
+     * trackSearch({user_data: {search_string: 'shoes'}});
      */
     trackSearch(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -563,7 +589,7 @@ class KepixelTracker {
      *
      * @example
      * // Tracking an initiate checkout event
-     * trackInitiateCheckout({ user_data: { value: 100, currency: 'USD', content_ids: ['prod123'] } });
+     * trackInitiateCheckout({user_data: {value: 100, currency: 'USD', content_ids: ['prod123']}});
      */
     trackInitiateCheckout(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -611,7 +637,7 @@ class KepixelTracker {
      *
      * @example
      * // Tracking an add payment info event
-     * trackAddPaymentInfo({ user_data: { value: 100, currency: 'USD' } });
+     * trackAddPaymentInfo({user_data: {value: 100, currency: 'USD'}});
      */
     trackAddPaymentInfo(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -659,7 +685,7 @@ class KepixelTracker {
      *
      * @example
      * // Tracking a sign up event
-     * trackSignUp({ user_data: { content_name: 'Newsletter Signup' } });
+     * trackSignUp({user_data: {content_name: 'Newsletter Signup'}});
      */
     trackSignUp(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -699,7 +725,7 @@ class KepixelTracker {
      *
      * @example
      * // Tracking a page view event
-     * trackPageView({ user_data: { page_url: 'https://example.com/home' } });
+     * trackPageView({user_data: {page_url: 'https://example.com/home'}});
      */
     trackPageView(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -742,7 +768,7 @@ class KepixelTracker {
      *
      * @example
      * // Tracking a list view event
-     * trackListView({ user_data: { content_ids: ['prod123', 'prod456'] } });
+     * trackListView({user_data: {content_ids: ['prod123', 'prod456']}});
      */
     trackListView(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -785,7 +811,7 @@ class KepixelTracker {
      *
      * @example
      * // Tracking an add to wishlist event
-     * trackAddToWishlist({ user_data: { content_ids: ['prod123'] } });
+     * trackAddToWishlist({user_data: {content_ids: ['prod123']}});
      */
     trackAddToWishlist(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -831,7 +857,7 @@ class KepixelTracker {
      *
      * @example
      * // Tracking an app open event
-     * trackAppOpen({ user_data: { app_version: '1.0.0' } });
+     * trackAppOpen({user_data: {app_version: '1.0.0'}});
      */
     trackAppOpen(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -870,7 +896,7 @@ class KepixelTracker {
      *
      * @example
      * // Tracking an app install event
-     * trackAppInstall({ user_data: { device_model: 'iPhone 13' } });
+     * trackAppInstall({user_data: {device_model: 'iPhone 13'}});
      */
     trackAppInstall(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -909,7 +935,7 @@ class KepixelTracker {
      *
      * @example
      * // Tracking a contact event
-     * trackContact({ user_data: { contact_method: 'email' } });
+     * trackContact({user_data: {contact_method: 'email'}});
      */
     trackContact(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -980,7 +1006,7 @@ class KepixelTracker {
      *
      * @example
      * // Tracking a login event
-     * trackLogin({ user_data: { method: 'email' } });
+     * trackLogin({user_data: {method: 'email'}});
      */
     trackLogin(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -1040,7 +1066,7 @@ class KepixelTracker {
      *
      * @example
      * // Tracking a custom event
-     * trackCustomEvent({ user_data: { custom_param: 'value' } });
+     * trackCustomEvent({user_data: {custom_param: 'value'}});
      */
     trackCustomEvent(options = {}) {
         const {user_data, source, campaign, custom_data, ...rest} = options;
@@ -1082,11 +1108,11 @@ class KepixelTracker {
      *
      * @example
      * // Tracking a goal conversion without revenue
-     * trackGoal({ goalId: 1 });
+     * trackGoal({goalId: 1});
      *
      * @example
      * // Tracking a goal conversion with revenue
-     * trackGoal({ goalId: 1, revenue: 10.50 });
+     * trackGoal({goalId: 1, revenue: 10.50});
      */
     trackGoal({goalId, revenue, user_data = {}, custom_data = {}}) {
         if (!goalId && goalId !== 0) {
@@ -1106,9 +1132,9 @@ class KepixelTracker {
      * Sets the current page view as a product or category page view.
      * Must be called before trackPageView.
      *
-     * @param {string|boolean} productSKU - Product SKU or false for category view.
-     * @param {string|boolean} productName - Product name or false for category view.
-     * @param {string|Array} categoryName - Product category or array of up to 5 categories.
+     * @param {string | boolean} productSKU - Product SKU or false for category view.
+     * @param {string | boolean} productName - Product name or false for category view.
+     * @param {string | Array} categoryName - Product category or array of up to 5 categories.
      * @param {number} [price] - Product price.
      * @returns {void}
      *
@@ -1137,7 +1163,7 @@ class KepixelTracker {
      *
      * @param {string} productSKU - Product SKU.
      * @param {string} [productName] - Product name.
-     * @param {string|Array} [categoryName] - Product category or array of up to 5 categories.
+     * @param {string | Array} [categoryName] - Product category or array of up to 5 categories.
      * @param {number} [price] - Product price.
      * @param {number} [quantity=1] - Product quantity.
      * @returns {void}
@@ -1530,8 +1556,11 @@ class KepixelTracker {
      * @param {Object} data - The tracking data.
      * @returns {Promise} A Promise that resolves when the tracking data is sent.
      */
-    track(data) {
+    async track(data) {
         if (!data) return;
+
+        // Wait for initialization to complete before proceeding
+        await this.initializationPromise;
 
         // take a possibly given language and delete it from the data object, as we need to pass it in
         // the headers instead of body params. otherwise it would overwrite the 'Accept-Language' value.

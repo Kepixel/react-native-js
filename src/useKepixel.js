@@ -63,6 +63,8 @@ const useKepixel = () => {
             // Configuration methods
             setUserId: (userId) => instance.setUserId && instance.setUserId(userId),
             setAppId: (appId) => instance.setAppId && instance.setAppId(appId),
+            putDeviceToken: (androidToken, iOSToken) => instance.putDeviceToken && instance.putDeviceToken(androidToken, iOSToken),
+            setAdvertisingId: (androidId, iOSId) => instance.setAdvertisingId && instance.setAdvertisingId(androidId, iOSId),
         }),
         [instance]
     );
