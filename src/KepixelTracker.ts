@@ -119,7 +119,7 @@ class KepixelTracker {
 
         this.trackerUrl = "https://edge.kepixel.com";
         this.appId = appId;
-        this.encodedAppId = btoa(appId);
+        this.encodedAppId = Buffer.from(appId, 'utf-8').toString('base64');
 
         if (userId) {
             this.userId = userId;
